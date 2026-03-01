@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja - Soft Power Informática</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/ecommerce.css" />
+</head>
+<body>
+  <header class="header"><div class="container nav-container"><a href="index.html" class="logo">Soft Power</a><nav class="nav"><a href="index.html" class="nav-link">Início</a><a href="loja.html" class="nav-link">Loja</a><a href="carrinho.html" class="nav-link">Carrinho (<span id="cart-count">0</span>)</a></nav></div></header>
+
+  <section class="section" style="padding-top:120px;">
+    <div class="container">
+      <h1>Loja</h1>
+      <p class="text-muted">Catálogo com produtos e serviços da Soft Power Informática.</p>
+
+      <div class="shop-toolbar">
+        <form class="shop-search" action="loja.html" method="get">
+          <input type="search" name="q" placeholder="Buscar por nome, categoria ou descrição" />
+        </form>
+        <div id="results-count" class="text-muted"></div>
+      </div>
+
+      <div class="filter-list" id="category-filters"></div>
+      <div class="shop-grid" id="product-grid"></div>
+    </div>
+  </section>
+
+  <script type="module" src="assets/js/loja.js"></script>
+</body>
+</html>
