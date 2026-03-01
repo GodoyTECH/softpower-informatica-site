@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - Soft Power Informática</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/ecommerce.css" />
+</head>
+<body>
+  <header class="header"><div class="container nav-container"><a href="index.html" class="logo">Soft Power</a><nav class="nav"><a href="loja.html" class="nav-link">Loja</a><a href="carrinho.html" class="nav-link">Carrinho</a></nav></div></header>
+
+  <section class="section" style="padding-top:120px;">
+    <div class="container checkout-grid">
+      <div>
+        <h1>Checkout</h1>
+        <div class="form-group"><label class="form-label" for="checkout-nome">Nome *</label><input class="form-input" id="checkout-nome" /></div>
+        <div class="form-group"><label class="form-label" for="checkout-whatsapp">WhatsApp *</label><input class="form-input" id="checkout-whatsapp" /></div>
+        <div class="form-group"><label class="form-label" for="checkout-entrega">Entrega/Retirada *</label><select class="form-select" id="checkout-entrega"><option value="">Selecione</option><option value="retirada">Retirada em loja</option><option value="entrega">Entrega</option></select></div>
+        <div class="form-group" id="checkout-endereco-wrap" style="display:none;"><label class="form-label" for="checkout-endereco">Endereço</label><textarea class="form-textarea" id="checkout-endereco"></textarea></div>
+        <div class="form-group"><label class="form-label" for="checkout-observacoes">Observações</label><textarea class="form-textarea" id="checkout-observacoes"></textarea></div>
+
+        <div class="shop-actions">
+          <button class="btn btn-whatsapp" id="finalize-whatsapp">Finalizar pelo WhatsApp</button>
+          <button class="btn btn-outline" id="pay-online">Pagar online (em breve)</button>
+          <button class="btn btn-outline" id="clear-cart">Limpar carrinho</button>
+        </div>
+      </div>
+
+      <div>
+        <h2>Resumo do pedido</h2>
+        <div id="checkout-items" class="budget-form"></div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="assets/js/checkout.js"></script>
+</body>
+</html>

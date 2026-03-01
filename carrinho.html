@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrinho - Soft Power Informática</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/ecommerce.css" />
+</head>
+<body>
+  <header class="header"><div class="container nav-container"><a href="index.html" class="logo">Soft Power</a><nav class="nav"><a href="loja.html" class="nav-link">Loja</a><a href="checkout.html" class="nav-link">Checkout</a></nav></div></header>
+
+  <section class="section" style="padding-top:120px;">
+    <div class="container">
+      <h1>Carrinho</h1>
+      <table class="cart-table">
+        <thead><tr><th>Produto</th><th>Preço</th><th>Qtd</th><th>Total</th><th>Ações</th></tr></thead>
+        <tbody id="cart-rows"></tbody>
+      </table>
+      <div style="margin-top:16px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;">
+        <div id="cart-summary"></div>
+        <button class="btn btn-primary" id="go-checkout">Finalizar compra</button>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="assets/js/carrinho.js"></script>
+</body>
+</html>

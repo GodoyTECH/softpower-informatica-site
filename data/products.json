@@ -1,0 +1,134 @@
+[
+  {
+    "id": "notebook-lenovo-i5-8gb-256ssd",
+    "nome": "Notebook Lenovo i5 8GB 256GB SSD",
+    "categoria": "Notebook/PC",
+    "preco": 2599.9,
+    "descricao": "Notebook para estudo e trabalho com ótimo custo-benefício.",
+    "destaque": true,
+    "badge": "Mais vendido",
+    "imagem": "https://via.placeholder.com/600x400?text=Notebook+Lenovo+i5",
+    "estoque": 7
+  },
+  {
+    "id": "pc-office-i3-16gb-ssd480",
+    "nome": "PC Office i3 16GB + SSD 480GB",
+    "categoria": "Notebook/PC",
+    "preco": 2190,
+    "descricao": "Desktop completo para escritório, home office e estudos.",
+    "destaque": false,
+    "badge": "Novo",
+    "imagem": "https://via.placeholder.com/600x400?text=PC+Office+i3",
+    "estoque": 4
+  },
+  {
+    "id": "ssd-sata-480gb",
+    "nome": "SSD SATA 480GB",
+    "categoria": "Upgrades (SSD/RAM)",
+    "preco": 289.9,
+    "descricao": "Upgrade rápido para melhorar desempenho do sistema.",
+    "destaque": true,
+    "badge": "Promo",
+    "imagem": "https://via.placeholder.com/600x400?text=SSD+480GB",
+    "estoque": 15
+  },
+  {
+    "id": "ssd-nvme-1tb",
+    "nome": "SSD NVMe 1TB",
+    "categoria": "Upgrades (SSD/RAM)",
+    "preco": 539.9,
+    "descricao": "Alta velocidade para notebooks e desktops compatíveis.",
+    "destaque": true,
+    "badge": "Novo",
+    "imagem": "https://via.placeholder.com/600x400?text=SSD+NVMe+1TB",
+    "estoque": 10
+  },
+  {
+    "id": "ram-ddr4-8gb",
+    "nome": "Memória RAM DDR4 8GB",
+    "categoria": "Upgrades (SSD/RAM)",
+    "preco": 199.9,
+    "descricao": "Memória para ampliar performance em multitarefas.",
+    "destaque": false,
+    "badge": "Mais vendido",
+    "imagem": "https://via.placeholder.com/600x400?text=RAM+DDR4+8GB",
+    "estoque": 20
+  },
+  {
+    "id": "formatacao-premium",
+    "nome": "Formatação Premium",
+    "categoria": "Manutenção",
+    "preco": 149.9,
+    "descricao": "Formatação completa com backup e instalação de programas essenciais.",
+    "destaque": true,
+    "badge": "Mais vendido",
+    "imagem": "https://via.placeholder.com/600x400?text=Formatacao+Premium",
+    "estoque": 999
+  },
+  {
+    "id": "limpeza-interna-pasta-termica",
+    "nome": "Limpeza Interna + Pasta Térmica",
+    "categoria": "Manutenção",
+    "preco": 129.9,
+    "descricao": "Serviço preventivo para reduzir aquecimento e travamentos.",
+    "destaque": false,
+    "badge": "Promo",
+    "imagem": "https://via.placeholder.com/600x400?text=Limpeza+Interna",
+    "estoque": 999
+  },
+  {
+    "id": "troca-tela-notebook",
+    "nome": "Troca de Tela Notebook",
+    "categoria": "Manutenção",
+    "preco": 399,
+    "descricao": "Substituição de tela com diagnóstico e garantia.",
+    "destaque": false,
+    "badge": "Novo",
+    "imagem": "https://via.placeholder.com/600x400?text=Troca+de+Tela",
+    "estoque": 999
+  },
+  {
+    "id": "kit-mouse-teclado-usb",
+    "nome": "Kit Mouse + Teclado USB",
+    "categoria": "Acessórios",
+    "preco": 89.9,
+    "descricao": "Kit básico com ótima durabilidade para uso diário.",
+    "destaque": false,
+    "badge": "Promo",
+    "imagem": "https://via.placeholder.com/600x400?text=Kit+Mouse+Teclado",
+    "estoque": 18
+  },
+  {
+    "id": "headset-gamer-rgb",
+    "nome": "Headset Gamer RGB",
+    "categoria": "Acessórios",
+    "preco": 179.9,
+    "descricao": "Headset com microfone e áudio estéreo imersivo.",
+    "destaque": false,
+    "badge": "Novo",
+    "imagem": "https://via.placeholder.com/600x400?text=Headset+Gamer",
+    "estoque": 9
+  },
+  {
+    "id": "suporte-notebook-ajustavel",
+    "nome": "Suporte Ajustável para Notebook",
+    "categoria": "Acessórios",
+    "preco": 69.9,
+    "descricao": "Ergonomia e ventilação para uso prolongado.",
+    "destaque": false,
+    "badge": "Novo",
+    "imagem": "https://via.placeholder.com/600x400?text=Suporte+Notebook",
+    "estoque": 25
+  },
+  {
+    "id": "pacote-protecao-digital",
+    "nome": "Pacote Proteção Digital",
+    "categoria": "Serviços",
+    "preco": 119.9,
+    "descricao": "Remoção de vírus + ajustes de segurança e performance.",
+    "destaque": true,
+    "badge": "Mais vendido",
+    "imagem": "https://via.placeholder.com/600x400?text=Protecao+Digital",
+    "estoque": 999
+  }
+]
