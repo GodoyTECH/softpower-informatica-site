@@ -92,35 +92,111 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== VALIDAÇÃO DE FORMULÁRIO =====
+  // ===== VALIDAÇÃO E ENVIO DE ORÇAMENTO NO WHATSAPP =====
   const budgetForm = document.getElementById('budget-form');
-  
+
+  function normalizeLabel(value) {
+    if (!value) return '-';
+    return String(value).replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  function getBudgetPayload() {
+    return {
+      nome: document.getElementById('nome')?.value.trim() || '',
+      whatsapp: document.getElementById('whatsapp')?.value.trim() || '',
+      tipo: document.getElementById('tipo')?.value || '',
+      servico: document.getElementById('servico')?.value || '',
+      descricao: document.getElementById('descricao')?.value.trim() || '',
+      urgencia: document.getElementById('urgencia')?.value || 'normal'
+    };
+  }
+
+  function validateBudgetPayload(data) {
+    const missing = [];
+    if (!data.nome) missing.push('Nome');
+    if (!data.whatsapp) missing.push('WhatsApp');
+    if (!data.tipo) missing.push('Tipo de equipamento');
+    if (!data.servico) missing.push('Serviço');
+    if (!data.descricao) missing.push('Descrição');
+
+    return missing;
+  }
+
+  function buildBudgetMessage(data, compact = false) {
+    const lines = [
+      'Olá! Vim pelo site da Soft Power Informática.',
+      compact ? '' : '',
+      `Nome: ${data.nome}`,
+      `WhatsApp: ${data.whatsapp}`,
+      `Equipamento: ${normalizeLabel(data.tipo)}`,
+      `Serviço: ${normalizeLabel(data.servico)}`,
+      `Descrição: ${data.descricao}`,
+      `Urgência: ${normalizeLabel(data.urgencia)}`,
+      'Obrigado!'
+    ];
+
+    if (compact) {
+      return [
+        'Olá! Vim pelo site da Soft Power Informática.',
+        `Nome: ${data.nome}`,
+        `WhatsApp: ${data.whatsapp}`,
+        `Serviço: ${normalizeLabel(data.servico)}`,
+        `Resumo: ${data.descricao.slice(0, 140)}${data.descricao.length > 140 ? '...' : ''}`,
+        'Obrigado!'
+      ].join('\n');
+    }
+
+    return lines.filter(Boolean).join('\n');
+  }
+
+  function openBudgetWhatsApp(data) {
+    const full = buildBudgetMessage(data, false);
+    let encoded = encodeURIComponent(full);
+    let url = `https://wa.me/${CONFIG.whatsapp}?text=${encoded}`;
+
+    if (url.length > 1800) {
+      const compact = buildBudgetMessage(data, true);
+      encoded = encodeURIComponent(compact);
+      url = `https://wa.me/${CONFIG.whatsapp}?text=${encoded}`;
+
+      const copyText = `${full}\n\n[Mensagem completa para copiar manualmente se necessário]`;
+      navigator.clipboard?.writeText(copyText).catch(() => {});
+      alert('A descrição ficou muito longa. Abrimos uma versão resumida e copiamos a mensagem completa para sua área de transferência.');
+    }
+
+    window.open(url, '_blank', 'noopener');
+  }
+
   if (budgetForm) {
     budgetForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
-      // Validar campos
-      const nome = document.getElementById('nome').value.trim();
-      const whatsapp = document.getElementById('whatsapp').value.trim();
-      const servico = document.getElementById('servico').value;
-      const descricao = document.getElementById('descricao').value.trim();
-      
-      if (!nome || !whatsapp || !servico || !descricao) {
-        alert('Por favor, preencha todos os campos obrigatórios!');
+      const payload = getBudgetPayload();
+      const missing = validateBudgetPayload(payload);
+
+      if (missing.length) {
+        alert(`Por favor, preencha os campos obrigatórios: ${missing.join(', ')}.`);
         return;
       }
-      
-      // Mostrar botão de WhatsApp
-      const whatsappBtn = document.getElementById('whatsapp-submit');
-      if (whatsappBtn) {
-        const mensagem = `Olá! Vim pelo site da Soft Power Informática.\n\nQuero orçamento para: ${servico}\n\nDetalhes: ${descricao}\n\nMeu nome: ${nome}\nWhatsApp: ${whatsapp}`;
-        const encodedMsg = encodeURIComponent(mensagem);
-        whatsappBtn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodedMsg}`;
-        whatsappBtn.style.display = 'inline-flex';
-        document.getElementById('form-submit').style.display = 'none';
-        alert('Formulário validado! Clique no botão do WhatsApp para enviar.');
-      }
+
+      openBudgetWhatsApp(payload);
     });
+
+    const whatsappBtn = document.getElementById('whatsapp-submit');
+    if (whatsappBtn) {
+      whatsappBtn.style.display = 'inline-flex';
+      whatsappBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const payload = getBudgetPayload();
+        const missing = validateBudgetPayload(payload);
+
+        if (missing.length) {
+          alert(`Para enviar no WhatsApp, preencha: ${missing.join(', ')}.`);
+          return;
+        }
+
+        openBudgetWhatsApp(payload);
+      });
+    }
   }
 
   // ===== BOTÃO VOLTAR AO TOPO =====
