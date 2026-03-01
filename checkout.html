@@ -20,11 +20,17 @@
         <div class="form-group" id="checkout-endereco-wrap" style="display:none;"><label class="form-label" for="checkout-endereco">Endereço</label><textarea class="form-textarea" id="checkout-endereco"></textarea></div>
         <div class="form-group"><label class="form-label" for="checkout-observacoes">Observações</label><textarea class="form-textarea" id="checkout-observacoes"></textarea></div>
 
+        <div class="card" style="margin:16px 0; padding:14px;">
+          <strong>Métodos de pagamento (gateway)</strong>
+          <p class="text-muted">PIX, Cartão de Crédito/Débito, Link de pagamento e QR Code (quando disponível no gateway).</p>
+        </div>
+
         <div class="shop-actions">
           <button class="btn btn-whatsapp" id="finalize-whatsapp">Finalizar pelo WhatsApp</button>
-          <button class="btn btn-outline" id="pay-online">Pagar online (em breve)</button>
+          <button class="btn btn-primary" id="pay-online">Pagar agora</button>
           <button class="btn btn-outline" id="clear-cart">Limpar carrinho</button>
         </div>
+        <div id="payment-feedback" class="text-muted" style="margin-top:10px;"></div>
       </div>
 
       <div>

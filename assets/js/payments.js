@@ -1,7 +1,13 @@
-// Placeholder para futuras integrações (Mercado Pago / Stripe)
-export async function createCheckoutSession(_cart, _customer) {
-  // Futuro: chamar backend com itens e cliente
-  return null;
+// Gateway de pagamento (Mercado Pago via Netlify Functions)
+export async function createCheckoutSession(cart, customer) {
+  const res = await fetch('/.netlify/functions/createCheckout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cart, customer })
+  });
+
+  if (!res.ok) return null;
+  return res.json();
 }
 
 export function redirectToPayment(url) {

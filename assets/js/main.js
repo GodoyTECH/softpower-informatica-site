@@ -132,9 +132,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const buy = document.createElement('a');
       buy.className = 'btn btn-primary btn-buy-now';
-      buy.href = `produto.html?id=${encodeURIComponent(match.id)}`;
-      buy.innerHTML = '<i class="fas fa-cart-plus"></i> Comprar';
+      buy.href = `checkout.html?buy=${encodeURIComponent(match.id)}`;
+      buy.innerHTML = '<i class="fas fa-bolt"></i> Comprar';
+
+      const add = document.createElement('button');
+      add.type = 'button';
+      add.className = 'btn btn-outline btn-add-cart';
+      add.innerHTML = '<i class="fas fa-cart-plus"></i> Adicionar';
+      add.addEventListener('click', () => {
+        let cart = [];
+        try { cart = JSON.parse(localStorage.getItem('softpower_cart_v1') || '[]'); } catch {}
+        const existing = cart.find((i) => i.id === match.id);
+        if (existing) existing.quantity += 1;
+        else cart.push({ id: match.id, nome: match.nome, preco: Number(match.preco || 0), imagem: match.imagem, quantity: 1 });
+        localStorage.setItem('softpower_cart_v1', JSON.stringify(cart));
+        alert('Produto adicionado ao carrinho.');
+      });
+
       actionsWrap.appendChild(buy);
+      actionsWrap.appendChild(add);
     });
   }
 
@@ -247,6 +263,97 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+  // ===== LOGO TOPO COM FALLBACK =====
+  function setupHeaderLogo() {
+    document.querySelectorAll('.logo').forEach((logoLink) => {
+      if (logoLink.querySelector('.brand-logo')) return;
+      const text = logoLink.textContent?.trim() || 'Soft Power';
+      logoLink.textContent = '';
+
+      const img = document.createElement('img');
+      img.src = 'logo.png';
+      img.alt = 'Soft Power Informática';
+      img.className = 'brand-logo';
+      img.loading = 'eager';
+      img.onerror = () => {
+        img.remove();
+        const fallback = document.createElement('span');
+        fallback.className = 'brand-fallback';
+        fallback.textContent = text;
+        logoLink.appendChild(fallback);
+      };
+      logoLink.appendChild(img);
+    });
+  }
+
+  setupHeaderLogo();
+
+  // ===== SLIDER PROMOÇÕES (HOME/LOJA) =====
+  async function setupPromoSlider() {
+    const sliderRoot = document.getElementById('promo-slider');
+    if (!sliderRoot) return;
+
+    let products = [];
+    try {
+      const res = await fetch('data/products.json');
+      if (!res.ok) return;
+      products = await res.json();
+    } catch {
+      return;
+    }
+
+    const promos = products.filter((p) => (p.badge || '').toLowerCase().includes('promo') || p.destaque).slice(0, 6);
+    if (!promos.length) return;
+
+    let current = 0;
+    const viewport = sliderRoot.querySelector('.promo-viewport');
+    const dots = sliderRoot.querySelector('.promo-dots');
+    const desc = sliderRoot.querySelector('.promo-description');
+    const link = sliderRoot.querySelector('.promo-link');
+
+    const render = () => {
+      viewport.innerHTML = promos.map((p, i) => `
+        <article class="promo-slide ${i === current ? 'active' : ''}">
+          <img src="${p.imagem}" alt="${p.nome}">
+          <div class="promo-meta">
+            <span class="shop-badge">Promo</span>
+            <h3>${p.nome}</h3>
+            <strong>R$ ${Number(p.preco || 0).toFixed(2).replace('.', ',')}</strong>
+          </div>
+        </article>
+      `).join('');
+
+      dots.innerHTML = promos.map((_, i) => `<button type="button" class="promo-dot ${i === current ? 'active' : ''}" data-dot="${i}"></button>`).join('');
+      desc.textContent = promos[current].descricao || '';
+      link.href = `produto.html?id=${encodeURIComponent(promos[current].id)}`;
+    };
+
+    const next = () => { current = (current + 1) % promos.length; render(); };
+    const prev = () => { current = (current - 1 + promos.length) % promos.length; render(); };
+
+    sliderRoot.querySelector('.promo-next')?.addEventListener('click', next);
+    sliderRoot.querySelector('.promo-prev')?.addEventListener('click', prev);
+    dots.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-dot]');
+      if (!btn) return;
+      current = Number(btn.dataset.dot || 0);
+      render();
+    });
+
+    let startX = 0;
+    viewport.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    viewport.addEventListener('touchend', (e) => {
+      const delta = e.changedTouches[0].clientX - startX;
+      if (Math.abs(delta) < 40) return;
+      if (delta < 0) next(); else prev();
+    }, { passive: true });
+
+    render();
+    setInterval(next, 5000);
+  }
+
+  setupPromoSlider();
 
   // ===== BOTÃO VOLTAR AO TOPO =====
   const scrollBtn = document.createElement('button');

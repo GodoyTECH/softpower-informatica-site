@@ -67,8 +67,9 @@ function renderProducts(products) {
         <p>${p.descricao}</p>
         <strong>${formatBRL(p.preco)}</strong>
         <div class="shop-actions">
-          <a class="btn btn-outline" href="produto.html?id=${encodeURIComponent(p.id)}">Ver detalhes</a>
-          <button class="btn btn-primary" data-add="${p.id}">Adicionar</button>
+          <a class="btn btn-primary" href="checkout.html?buy=${encodeURIComponent(p.id)}">Comprar</a>
+          <button class="btn btn-outline" data-add="${p.id}">Adicionar ao carrinho</button>
+          <a class="btn btn-outline" href="produto.html?id=${encodeURIComponent(p.id)}">Detalhes</a>
         </div>
       </div>
     </article>

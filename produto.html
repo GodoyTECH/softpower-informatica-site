@@ -14,6 +14,13 @@
     <div class="container" id="product-detail"></div>
   </section>
 
+  <script src="assets/js/env.js"></script>
+  <script>
+    window.__STORE_CONFIG__ = {
+      whatsapp: '5511958882556',
+      googleReviewUrl: window.__ENV__?.GOOGLE_REVIEW_URL || ''
+    };
+  </script>
   <script type="module" src="assets/js/produto.js"></script>
 </body>
 </html>

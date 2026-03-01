@@ -4,24 +4,30 @@
 
 /* ===== VARIÁVEIS ===== */
 :root {
-  --primary: #FF6B00;
-  --primary-light: #ff8c3a;
-  --primary-dark: #cc5500;
-  --bg-dark: #0a0a0a;
-  --bg-card: #141414;
-  --bg-card-hover: #1a1a1a;
-  --text-light: #f5f5f5;
-  --text-muted: #a0a0a0;
-  --border: #2a2a2a;
-  --success: #00c853;
-  --warning: #ffc107;
-  --danger: #ff5252;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-hover: 0 8px 30px rgba(255, 107, 0, 0.15);
+  --bg: #F2F3F5;
+  --text: #101418;
+  --primary: #0B4E5B;
+  --accent: #E07A1F;
+  --card: #FFFFFF;
+  --muted: #5F6B73;
+  --border: #D7DCE1;
+
+  --primary-light: #146879;
+  --primary-dark: #083945;
+  --bg-dark: var(--bg);
+  --bg-card: var(--card);
+  --bg-card-hover: #F7F9FA;
+  --text-light: var(--text);
+  --text-muted: var(--muted);
+  --success: #1b9e5a;
+  --warning: #d69a1a;
+  --danger: #d84a4a;
+  --shadow: 0 6px 20px rgba(16, 20, 24, 0.08);
+  --shadow-hover: 0 10px 26px rgba(11, 78, 91, 0.12);
   --radius: 12px;
   --radius-sm: 8px;
-  --transition: all 0.3s ease;
-  --header-height: 70px;
+  --transition: all 0.25s ease;
+  --header-height: 78px;
 }
 
 /* ===== RESET ===== */
@@ -110,8 +116,8 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   left: 0;
   right: 0;
   height: var(--header-height);
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(242, 243, 245, 0.95);
+  backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   z-index: 1000;
   transition: var(--transition);
@@ -129,9 +135,20 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   align-items: center;
   gap: 12px;
   font-family: 'Orbitron', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-light);
+  min-width: 160px;
+}
+
+.brand-logo {
+  max-height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-fallback {
+  color: var(--text);
 }
 
 .logo-icon {
@@ -148,7 +165,8 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 .nav {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 24px;
+  justify-content: center;
 }
 
 .nav-link {
@@ -200,14 +218,28 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 @media (max-width: 768px) {
   .menu-toggle {
     display: flex;
+    order: 3;
   }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+  }
+
+  .logo {
+    justify-self: center;
+    min-width: auto;
+  }
+
+  .brand-logo { max-height: 44px; }
 
   .nav {
     position: fixed;
     top: var(--header-height);
     left: 0;
     right: 0;
-    background: var(--bg-dark);
+    background: var(--card);
     flex-direction: column;
     padding: 20px;
     gap: 15px;
@@ -251,14 +283,15 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 }
 
 .btn-outline {
-  background: transparent;
-  border: 2px solid var(--primary);
+  background: rgba(11, 78, 91, 0.06);
+  border: 1px solid rgba(11, 78, 91, 0.4);
   color: var(--primary);
+  backdrop-filter: blur(4px);
 }
 
 .btn-outline:hover {
-  background: var(--primary);
-  color: white;
+  background: rgba(11, 78, 91, 0.14);
+  color: var(--primary-dark);
 }
 
 .btn-whatsapp {
@@ -278,8 +311,8 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   align-items: center;
   padding-top: var(--header-height);
   background: 
-    radial-gradient(ellipse at 30% 20%, rgba(255, 107, 0, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(255, 107, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 20%, rgba(11, 78, 91, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(224, 122, 31, 0.12) 0%, transparent 50%),
     var(--bg-dark);
   position: relative;
   overflow: hidden;

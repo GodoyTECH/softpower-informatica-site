@@ -1,5 +1,5 @@
-import { getCart, getCartTotals, clearCart } from './cart.js';
-import { formatBRL } from './products.js';
+import { getCart, getCartTotals, clearCart, addToCart } from './cart.js';
+import { formatBRL, loadProducts } from './products.js';
 import { createCheckoutSession, redirectToPayment } from './payments.js';
 
 const STORE_WHATSAPP = '5511958882556';
@@ -85,13 +85,27 @@ document.getElementById('pay-online')?.addEventListener('click', async () => {
     observacoes: document.getElementById('checkout-observacoes')?.value.trim()
   };
 
+  const feedback = document.getElementById('payment-feedback');
+  if (feedback) feedback.textContent = 'Criando sessão de pagamento...';
+
   const session = await createCheckoutSession(cart, customer);
-  if (!session?.url) {
-    alert('Pagamento online em breve. Finalize pelo WhatsApp por enquanto.');
+  if (!session?.ok) {
+    if (feedback) feedback.textContent = 'Pagamento online ainda não está ativo. Use o WhatsApp por enquanto.';
     return;
   }
 
-  redirectToPayment(session.url);
+  const url = session.paymentUrl || session.sandboxUrl;
+  if (session.pixCopyPaste && feedback) {
+    feedback.innerHTML = `PIX copia e cola: <code>${session.pixCopyPaste}</code>`;
+  }
+
+  if (!url) {
+    if (feedback) feedback.textContent = 'Sessão criada sem URL de pagamento. Verifique configuração do gateway.';
+    return;
+  }
+
+  if (feedback) feedback.textContent = 'Redirecionando para o gateway...';
+  redirectToPayment(url);
 });
 
 document.getElementById('checkout-entrega')?.addEventListener('change', (e) => {
@@ -106,4 +120,21 @@ document.getElementById('clear-cart')?.addEventListener('click', () => {
   renderOrderSummary();
 });
 
-renderOrderSummary();
+async function initQuickBuy() {
+  const buyId = new URLSearchParams(window.location.search).get('buy');
+  if (!buyId) return;
+
+  const cart = getCart();
+  if (cart.some((i) => i.id === buyId)) return;
+
+  try {
+    const products = await loadProducts();
+    const product = products.find((p) => p.id === buyId);
+    if (!product) return;
+    addToCart(product, 1);
+  } catch {
+    // noop
+  }
+}
+
+initQuickBuy().then(renderOrderSummary);

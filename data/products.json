@@ -7,7 +7,7 @@
     "descricao": "Notebook para estudo e trabalho com ótimo custo-benefício.",
     "destaque": true,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=Notebook+Lenovo+i5",
+    "imagem": "assets/products/produto_1.jpg",
     "estoque": 7
   },
   {
@@ -18,7 +18,7 @@
     "descricao": "Desktop completo para escritório, home office e estudos.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=PC+Office+i3",
+    "imagem": "assets/products/produto_2.jpg",
     "estoque": 4
   },
   {
@@ -29,7 +29,7 @@
     "descricao": "Upgrade rápido para melhorar desempenho do sistema.",
     "destaque": true,
     "badge": "Promo",
-    "imagem": "https://via.placeholder.com/600x400?text=SSD+480GB",
+    "imagem": "assets/products/produto_3.jpg",
     "estoque": 15
   },
   {
@@ -40,7 +40,7 @@
     "descricao": "Alta velocidade para notebooks e desktops compatíveis.",
     "destaque": true,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=SSD+NVMe+1TB",
+    "imagem": "assets/products/produto_4.jpg",
     "estoque": 10
   },
   {
@@ -51,7 +51,7 @@
     "descricao": "Memória para ampliar performance em multitarefas.",
     "destaque": false,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=RAM+DDR4+8GB",
+    "imagem": "assets/products/produto_5.jpg",
     "estoque": 20
   },
   {
@@ -62,7 +62,7 @@
     "descricao": "Formatação completa com backup e instalação de programas essenciais.",
     "destaque": true,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=Formatacao+Premium",
+    "imagem": "assets/products/produto_6.jpg",
     "estoque": 999
   },
   {
@@ -73,7 +73,7 @@
     "descricao": "Serviço preventivo para reduzir aquecimento e travamentos.",
     "destaque": false,
     "badge": "Promo",
-    "imagem": "https://via.placeholder.com/600x400?text=Limpeza+Interna",
+    "imagem": "assets/products/produto_7.jpg",
     "estoque": 999
   },
   {
@@ -84,7 +84,7 @@
     "descricao": "Substituição de tela com diagnóstico e garantia.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=Troca+de+Tela",
+    "imagem": "assets/products/produto_8.jpg",
     "estoque": 999
   },
   {
@@ -95,7 +95,7 @@
     "descricao": "Kit básico com ótima durabilidade para uso diário.",
     "destaque": false,
     "badge": "Promo",
-    "imagem": "https://via.placeholder.com/600x400?text=Kit+Mouse+Teclado",
+    "imagem": "assets/products/produto_9.jpg",
     "estoque": 18
   },
   {
@@ -106,7 +106,7 @@
     "descricao": "Headset com microfone e áudio estéreo imersivo.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=Headset+Gamer",
+    "imagem": "assets/products/produto_10.jpg",
     "estoque": 9
   },
   {
@@ -117,7 +117,7 @@
     "descricao": "Ergonomia e ventilação para uso prolongado.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=Suporte+Notebook",
+    "imagem": "assets/products/produto_11.jpg",
     "estoque": 25
   },
   {
@@ -128,7 +128,7 @@
     "descricao": "Remoção de vírus + ajustes de segurança e performance.",
     "destaque": true,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=Protecao+Digital",
+    "imagem": "assets/products/produto_12.jpg",
     "estoque": 999
   }
 ]
