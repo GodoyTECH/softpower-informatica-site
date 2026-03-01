@@ -70,16 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== FILTRO DE ANÚNCIOS =====
   const filterBtns = document.querySelectorAll('.filter-btn');
   const adCards = document.querySelectorAll('.ad-card');
-  
+
   if (filterBtns.length > 0 && adCards.length > 0) {
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         // Atualizar botões
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
+
         const filter = btn.dataset.filter;
-        
+
         // Filtrar cards
         adCards.forEach(card => {
           if (filter === 'all' || card.dataset.category === filter) {
@@ -91,6 +91,54 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // ===== BOTÃO DE COMPRA NOS ANÚNCIOS =====
+  async function injectBuyButtonsOnAds() {
+    const cards = Array.from(document.querySelectorAll('.ad-card'));
+    if (!cards.length) return;
+
+    let products = [];
+    try {
+      const res = await fetch('data/products.json');
+      if (!res.ok) return;
+      products = await res.json();
+    } catch {
+      return;
+    }
+
+    const normalize = (v = '') => String(v)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    cards.forEach((card) => {
+      const titleEl = card.querySelector('h3');
+      const actionsWrap = card.querySelector('.ad-actions') || card.querySelector('.shop-actions') || card;
+      if (!titleEl || !actionsWrap) return;
+
+      // evita duplicar
+      if (actionsWrap.querySelector('.btn-buy-now')) return;
+
+      const title = normalize(titleEl.textContent || '');
+      const match = products.find((p) => {
+        const n1 = normalize(p.nome || '');
+        return n1.includes(title) || title.includes(n1);
+      });
+
+      if (!match) return;
+
+      const buy = document.createElement('a');
+      buy.className = 'btn btn-primary btn-buy-now';
+      buy.href = `produto.html?id=${encodeURIComponent(match.id)}`;
+      buy.innerHTML = '<i class="fas fa-cart-plus"></i> Comprar';
+      actionsWrap.appendChild(buy);
+    });
+  }
+
+  injectBuyButtonsOnAds();
 
   // ===== VALIDAÇÃO E ENVIO DE ORÇAMENTO NO WHATSAPP =====
   const budgetForm = document.getElementById('budget-form');
@@ -164,7 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('A descrição ficou muito longa. Abrimos uma versão resumida e copiamos a mensagem completa para sua área de transferência.');
     }
 
-    window.open(url, '_blank', 'noopener');
+    // Mais confiável em mobile/desktop do que popup
+    window.location.href = url;
   }
 
   if (budgetForm) {
