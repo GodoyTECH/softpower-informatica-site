@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-label="Formatação Premium">
+<defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0B4E5B"/><stop offset="1" stop-color="#114B5F"/></linearGradient></defs>
+<rect width="1200" height="800" fill="#F2F3F5"/>
+<rect x="60" y="60" width="1080" height="680" rx="32" fill="url(#g)" opacity=".92"/>
+<circle cx="180" cy="180" r="72" fill="#E07A1F" opacity=".85"/>
+<text x="600" y="390" font-size="68" text-anchor="middle" fill="#ffffff" font-family="Inter,Arial,sans-serif" font-weight="700">Formatação Premium</text>
+<text x="600" y="470" font-size="32" text-anchor="middle" fill="#d8e1e3" font-family="Inter,Arial,sans-serif">Soft Power Informática</text>
+</svg>

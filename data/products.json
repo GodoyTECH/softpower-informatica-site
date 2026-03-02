@@ -7,8 +7,9 @@
     "descricao": "Notebook para estudo e trabalho com ótimo custo-benefício.",
     "destaque": true,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=Notebook+Lenovo+i5",
-    "estoque": 7
+    "imagem": "assets/products/produto_notebook-lenovo-i5-8gb-256ssd.svg",
+    "estoque": 7,
+    "tipo": "produto"
   },
   {
     "id": "pc-office-i3-16gb-ssd480",
@@ -18,8 +19,9 @@
     "descricao": "Desktop completo para escritório, home office e estudos.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=PC+Office+i3",
-    "estoque": 4
+    "imagem": "assets/products/produto_pc-office-i3-16gb-ssd480.svg",
+    "estoque": 4,
+    "tipo": "produto"
   },
   {
     "id": "ssd-sata-480gb",
@@ -29,8 +31,9 @@
     "descricao": "Upgrade rápido para melhorar desempenho do sistema.",
     "destaque": true,
     "badge": "Promo",
-    "imagem": "https://via.placeholder.com/600x400?text=SSD+480GB",
-    "estoque": 15
+    "imagem": "assets/products/produto_ssd-sata-480gb.svg",
+    "estoque": 15,
+    "tipo": "produto"
   },
   {
     "id": "ssd-nvme-1tb",
@@ -40,8 +43,9 @@
     "descricao": "Alta velocidade para notebooks e desktops compatíveis.",
     "destaque": true,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=SSD+NVMe+1TB",
-    "estoque": 10
+    "imagem": "assets/products/produto_ssd-nvme-1tb.svg",
+    "estoque": 10,
+    "tipo": "produto"
   },
   {
     "id": "ram-ddr4-8gb",
@@ -51,8 +55,9 @@
     "descricao": "Memória para ampliar performance em multitarefas.",
     "destaque": false,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=RAM+DDR4+8GB",
-    "estoque": 20
+    "imagem": "assets/products/produto_ram-ddr4-8gb.svg",
+    "estoque": 20,
+    "tipo": "produto"
   },
   {
     "id": "formatacao-premium",
@@ -62,8 +67,9 @@
     "descricao": "Formatação completa com backup e instalação de programas essenciais.",
     "destaque": true,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=Formatacao+Premium",
-    "estoque": 999
+    "imagem": "assets/products/produto_formatacao-premium.svg",
+    "estoque": 999,
+    "tipo": "servico"
   },
   {
     "id": "limpeza-interna-pasta-termica",
@@ -73,8 +79,9 @@
     "descricao": "Serviço preventivo para reduzir aquecimento e travamentos.",
     "destaque": false,
     "badge": "Promo",
-    "imagem": "https://via.placeholder.com/600x400?text=Limpeza+Interna",
-    "estoque": 999
+    "imagem": "assets/products/produto_limpeza-interna-pasta-termica.svg",
+    "estoque": 999,
+    "tipo": "servico"
   },
   {
     "id": "troca-tela-notebook",
@@ -84,8 +91,9 @@
     "descricao": "Substituição de tela com diagnóstico e garantia.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=Troca+de+Tela",
-    "estoque": 999
+    "imagem": "assets/products/produto_troca-tela-notebook.svg",
+    "estoque": 999,
+    "tipo": "servico"
   },
   {
     "id": "kit-mouse-teclado-usb",
@@ -95,8 +103,9 @@
     "descricao": "Kit básico com ótima durabilidade para uso diário.",
     "destaque": false,
     "badge": "Promo",
-    "imagem": "https://via.placeholder.com/600x400?text=Kit+Mouse+Teclado",
-    "estoque": 18
+    "imagem": "assets/products/produto_kit-mouse-teclado-usb.svg",
+    "estoque": 18,
+    "tipo": "produto"
   },
   {
     "id": "headset-gamer-rgb",
@@ -106,8 +115,9 @@
     "descricao": "Headset com microfone e áudio estéreo imersivo.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=Headset+Gamer",
-    "estoque": 9
+    "imagem": "assets/products/produto_headset-gamer-rgb.svg",
+    "estoque": 9,
+    "tipo": "produto"
   },
   {
     "id": "suporte-notebook-ajustavel",
@@ -117,8 +127,9 @@
     "descricao": "Ergonomia e ventilação para uso prolongado.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "https://via.placeholder.com/600x400?text=Suporte+Notebook",
-    "estoque": 25
+    "imagem": "assets/products/produto_suporte-notebook-ajustavel.svg",
+    "estoque": 25,
+    "tipo": "produto"
   },
   {
     "id": "pacote-protecao-digital",
@@ -128,7 +139,8 @@
     "descricao": "Remoção de vírus + ajustes de segurança e performance.",
     "destaque": true,
     "badge": "Mais vendido",
-    "imagem": "https://via.placeholder.com/600x400?text=Protecao+Digital",
-    "estoque": 999
+    "imagem": "assets/products/produto_pacote-protecao-digital.svg",
+    "estoque": 999,
+    "tipo": "servico"
   }
 ]

@@ -249,3 +249,13 @@ Atualmente é placeholder para integrar depois com Mercado Pago / Stripe.
 - O envio de orçamento via WhatsApp **não usa plugin externo**.
 - O formulário mantém compatibilidade com Netlify Forms.
 - E-commerce atual é MVP sem backend de pagamento.
+
+## Configuração manual (produção)
+
+1. Defina variáveis no Netlify: `VITE_STORE_WHATSAPP`, `VITE_GOOGLE_REVIEW_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`.
+2. Crie no Supabase as tabelas:
+   - `product_reviews(id uuid, product_id text, name text, rating int, comment text, created_at timestamptz)`
+   - `orders(id uuid, itens jsonb, total numeric, status text, created_at timestamptz, payment_id text, customer jsonb)`
+3. Configure webhook do Mercado Pago para `https://SEU_DOMINIO/.netlify/functions/webhookPayment`.
+4. Configure URL pública de avaliações Google em `VITE_GOOGLE_REVIEW_URL`.
+5. Publique `logo.png` na raiz para ativar logotipo automático.
