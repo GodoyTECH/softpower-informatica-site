@@ -2,7 +2,7 @@ import { getCart, getCartTotals, clearCart } from './cart.js';
 import { formatBRL } from './products.js';
 import { createCheckoutSession, redirectToPayment } from './payments.js';
 
-const STORE_WHATSAPP = '5511958882556';
+const STORE_WHATSAPP = window.APP_CONFIG?.whatsapp || '5511958882556';
 
 function buildOrderMessage(cart, customer) {
   const lines = [
@@ -72,7 +72,7 @@ document.getElementById('finalize-whatsapp')?.addEventListener('click', () => {
 
   const message = buildOrderMessage(cart, customer);
   const url = `https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(message)}`;
-  window.open(url, '_blank', 'noopener');
+  window.location.href = url;
 });
 
 document.getElementById('pay-online')?.addEventListener('click', async () => {
@@ -86,12 +86,17 @@ document.getElementById('pay-online')?.addEventListener('click', async () => {
   };
 
   const session = await createCheckoutSession(cart, customer);
-  if (!session?.url) {
-    alert('Pagamento online em breve. Finalize pelo WhatsApp por enquanto.');
+  if (!session?.url && !session?.pix_qr) {
+    alert('Pagamento online indisponível no momento. Finalize pelo WhatsApp por enquanto.');
     return;
   }
-
-  redirectToPayment(session.url);
+  if (session?.pix_qr) {
+    const pixWrap = document.getElementById('pix-result');
+    if (pixWrap) {
+      pixWrap.innerHTML = `<p><strong>PIX Copia e Cola:</strong></p><textarea readonly style="width:100%;min-height:90px">${session.pix_qr}</textarea>`;
+    }
+  }
+  if (session?.url) redirectToPayment(session.url);
 });
 
 document.getElementById('checkout-entrega')?.addEventListener('change', (e) => {
