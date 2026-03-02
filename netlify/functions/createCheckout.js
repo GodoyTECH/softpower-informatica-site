@@ -1,10 +1,10 @@
-import crypto from 'crypto';
+const crypto = require('crypto');
 
-export default async (req) => {
-  if (req.method !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
 
   try {
-    const body = JSON.parse(req.body || '{}');
+    const body = JSON.parse(event.body || '{}');
     const { cart = [], customer = {} } = body;
 
     const token = process.env.MP_ACCESS_TOKEN;
