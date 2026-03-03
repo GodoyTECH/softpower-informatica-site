@@ -8,7 +8,7 @@
   <title>Soft Power Informática - Assistência Técnica e Vendas</title>
   
   <!-- Favicon -->
-  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,10 +26,7 @@
   <header class="header">
     <div class="container header-inner">
       <a href="index.html" class="logo">
-        <div class="logo-icon">
-          <i class="fas fa-microchip"></i>
-        </div>
-        <span>SOFT POWER</span>
+        <span class="logo-fallback"><i class="fas fa-microchip"></i> SOFT POWER</span>
       </a>
       
       <button class="menu-toggle" aria-label="Menu">
@@ -58,6 +55,9 @@
   <section class="hero">
     <div class="container">
       <div class="hero-content">
+        <div class="hero-brand" aria-hidden="true">
+          <img src="assets/img/logo-full.svg" alt="Soft Power Informática" class="hero-logo">
+        </div>
         <h1>Sua <span>Informática</span> em Primeiro Lugar</h1>
         <p class="hero-subtitle">
           Assistência técnica especializada, vendas e upgrades para notebooks e computadores. 
@@ -89,6 +89,23 @@
       </div>
     </div>
   </section>
+
+  <!-- Promoções da Loja -->
+  <section id="anuncios" class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Promoções em Destaque</h2>
+        <p>Um único painel com ofertas reais da loja, sem poluição visual.</p>
+      </div>
+
+      <div id="promo-slider" class="promo-slider" aria-label="Slider de promoções"></div>
+
+      <div class="text-center" style="margin-top: 30px;">
+        <a href="loja.html" class="btn btn-primary">Ir para a Loja Completa</a>
+      </div>
+    </div>
+  </section>
+
 
   <!-- Serviços -->
   <section id="servicos" class="section">
@@ -167,6 +184,14 @@
       <div class="text-center" style="margin-top: 40px;">
         <a href="servicos.html" class="btn btn-primary">Ver Todos os Serviços</a>
       </div>
+
+      <div class="service-quote-cta">
+        <h3>Solicite um Orçamento</h3>
+        <p>Preencha o formulário e nossa equipe entra em contato com você pelo WhatsApp.</p>
+        <a href="orcamento.html" class="btn btn-primary">
+          <i class="fas fa-file-alt"></i> Preencher Formulário
+        </a>
+      </div>
     </div>
   </section>
 
@@ -218,22 +243,6 @@
             <p>Peças originais ou de primeira linha. Compromisso com a excelência.</p>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Promoções da Loja -->
-  <section id="anuncios" class="section">
-    <div class="container">
-      <div class="section-title">
-        <h2>Promoções em Destaque</h2>
-        <p>Um único painel com ofertas reais da loja, sem poluição visual.</p>
-      </div>
-
-      <div id="promo-slider" class="promo-slider" aria-label="Slider de promoções"></div>
-
-      <div class="text-center" style="margin-top: 30px;">
-        <a href="loja.html" class="btn btn-primary">Ir para a Loja Completa</a>
       </div>
     </div>
   </section>
@@ -427,7 +436,7 @@
           <button class="faq-question">Vocês atendem todas as marcas?</button>
           <div class="faq-answer">
             <p>Sim! Atendemos notebooks e computadores de todas as marcas: Dell, HP, Samsung, Asus, Apple e outras.</p>
-         , Lenovo, Acer </div>
+          </div>
         </div>
         
         <div class="faq-item">

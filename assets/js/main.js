@@ -10,16 +10,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const nav = document.querySelector('.nav');
   menuToggle?.addEventListener('click', () => nav?.classList.toggle('active'));
 
-  const logo = document.querySelector('.logo');
-  if (logo) {
-    const img = new Image();
-    img.src = 'logo.png';
-    img.alt = 'Soft Power Informática';
-    img.className = 'logo-img';
-    img.onerror = () => { logo.innerHTML = '<span class="logo-fallback"><i class="fas fa-microchip"></i> SOFT POWER</span>'; };
-    img.onload = () => { logo.innerHTML = ''; logo.appendChild(img); };
-  }
-
   const promoWrap = document.getElementById('promo-slider');
   if (promoWrap) {
     const products = await fetch('data/products.json').then((r) => r.json()).catch(() => []);
