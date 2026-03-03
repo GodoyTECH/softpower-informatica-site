@@ -980,23 +980,23 @@ body { background: var(--bg); color: var(--text); }
 .logo-img { width: clamp(120px, 18vw, 180px); height: auto; object-fit: contain; }
 
 .header .logo img {
-  height: 35px;
+  height: 50px;
   width: auto;
-  max-width: 150px;
+  max-width: 180px;
   object-fit: contain;
 }
 
 @media (max-width: 768px) {
   .header .logo img {
-    height: 28px;
-    max-width: 120px;
+    height: 45px;
+    max-width: 160px;
   }
 }
 
 @media (max-width: 480px) {
   .header .logo img {
-    height: 24px;
-    max-width: 100px;
+    height: 40px;
+    max-width: 140px;
   }
 }
 .nav-logo-icon { width: 30px; height: 30px; object-fit: contain; }
