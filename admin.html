@@ -376,7 +376,7 @@
     <h1>🖥️ SoftPower Admin</h1>
     <nav>
       <a href="index.html" class="active">Produtos</a>
-      <a href="pedidos.html">Pedidos & Serviços</a>
+      <a href="dashpedidos.html">Pedidos & Serviços</a>
     </nav>
   </div>
   
@@ -496,10 +496,25 @@
   </div>
 
   <script>
-    // Load products from localStorage or default
-    let products = JSON.parse(localStorage.getItem('softpower_products')) || [];
+    // Load products from JSON file (same source as the store)
+    let products = [];
     
-    // If no products, load from default data
+    async function loadProducts() {
+      try {
+        const res = await fetch('data/products.json', { cache: 'no-store' });
+        products = await res.json();
+        renderProducts();
+      } catch (e) {
+        console.error('Error loading products:', e);
+        products = [];
+        renderProducts();
+      }
+    }
+    
+    // Load on start
+    loadProducts();
+    
+    /* // Original localStorage code disabled - using JSON file instead
     if (products.length === 0) {
       products = [
         {
@@ -721,8 +736,7 @@
       if (e.key === 'Enter') sendMessage();
     });
     
-    // Initial render
-    renderProducts();
+    // Initial render - now handled in loadProducts()
   </script>
 </body>
 </html>

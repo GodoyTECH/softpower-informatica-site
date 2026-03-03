@@ -16,7 +16,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const promos = products.filter((p) => (p.badge || '').toLowerCase().includes('promo') || p.destaque).slice(0, 6);
     if (promos.length) {
       let index = 0;
-      promoWrap.innerHTML = `<div class="promo-track">${promos.map((p) => `<article class="promo-slide"><div class="promo-media"><img src="${p.imagem}" alt="${p.nome}"></div><div><span class="promo-seal">Promo</span><h3>${p.nome}</h3><p>${p.descricao}</p><a class="btn btn-glass" href="produto.html?id=${encodeURIComponent(p.id)}">Ver este item</a></div></article>`).join('')}</div><div class="promo-nav"><button class="btn btn-outline" id="promo-prev">◀</button><button class="btn btn-outline" id="promo-next">▶</button></div><div class="promo-dots">${promos.map((_, i) => `<button class="promo-dot ${i === 0 ? 'active' : ''}" data-dot="${i}"></button>`).join('')}</div><p class="text-muted" id="promo-description">${promos[0].descricao}</p>`;
+      const STORE_WHATSAPP = window.APP_CONFIG?.whatsapp || '5511958882556';
+promoWrap.innerHTML = `<div class="promo-track">${promos.map((p) => `<article class="promo-slide"><div class="promo-media"><img src="${p.imagem}" alt="${p.nome}"></div><div><span class="promo-seal">${p.badge || 'Promo'}</span><h3>${p.nome}</h3><p>${p.descricao}</p>${p.tipo === 'servico' 
+  ? `<a class="btn btn-glass" target="_blank" rel="noopener" href="https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent('Olá! Quero informações sobre: ' + p.nome)}">Solicitar serviço</a>`
+  : `<a class="btn btn-glass" href="produto.html?id=${encodeURIComponent(p.id)}">Ver este item</a>`}</div></article>`).join('')}</div><div class="promo-nav"><button class="btn btn-outline" id="promo-prev">◀</button><button class="btn btn-outline" id="promo-next">▶</button></div><div class="promo-dots">${promos.map((_, i) => `<button class="promo-dot ${i === 0 ? 'active' : ''}" data-dot="${i}"></button>`).join('')}</div><p class="text-muted" id="promo-description">${promos[0].descricao}</p>`;
       const track = promoWrap.querySelector('.promo-track');
       const dots = [...promoWrap.querySelectorAll('.promo-dot')];
       const update = () => {
