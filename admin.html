@@ -267,7 +267,36 @@
       border-color: var(--primary);
     }
     
-    .chat-input .btn-send {
+    
+    .chat-input .btn-attach {
+      padding: 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-input .btn-attach:hover {
+      border-color: var(--primary);
+    }
+    .chat-input #file-input {
+      display: none;
+    }
+    .chat-preview {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+    }
+    .chat-preview.visible {
+      display: block;
+    }
+
+.chat-input .btn-send {
       padding: 12px 20px;
       background: var(--primary);
       border: none;
@@ -372,11 +401,62 @@
   </style>
 </head>
 <body>
+<div id="login-modal" class="login-modal">
+  <div class="login-box">
+    <h2>🔐 Admin Login</h2>
+    <form id="login-form">
+      <input type="text" id="login-user" placeholder="Usuário" required>
+      <input type="password" id="login-pass" placeholder="Senha" required>
+      <button type="submit" class="btn btn-primary">Entrar</button>
+      <p id="login-error" class="error-msg"></p>
+    </form>
+    <p class="login-hint">Configure as variáveis ADMIN_USER e ADMIN_PASS no Netlify</p>
+  </div>
+</div>
+
+<style>
+.login-modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+.login-modal.hidden { display: none; }
+.login-box {
+  background: var(--bg-card);
+  padding: 40px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+}
+.login-box h2 { text-align: center; margin-bottom: 20px; color: var(--primary); }
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+}
+.login-box .btn { width: 100%; padding: 12px; }
+.error-msg { color: var(--danger); text-align: center; margin-top: 10px; display: none; }
+.login-hint { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 15px; }
+</style>
+
+
   <div class="header">
     <h1>🖥️ SoftPower Admin</h1>
     <nav>
       <a href="index.html" class="active">Produtos</a>
-      <a href="pedidos.html">Pedidos & Serviços</a>
+      <a href="dashpedidos.html">Pedidos & Serviços</a>
     </nav>
   </div>
   
@@ -412,6 +492,10 @@
         </div>
       </div>
       <div class="chat-input">
+        <label for="file-input" class="btn-attach" title="Anexar imagem">📎</label>
+        <input type="file" id="file-input" accept="image/*">
+        <img id="chat-preview" class="chat-preview" alt="Preview">
+        <input type="text" id="product-id-input" placeholder="ID do produto (opcional)" style="width: 140px;">
         <input type="text" id="chat-input" placeholder="Digite sua mensagem...">
         <button class="btn-send" onclick="sendMessage()">➤</button>
       </div>
@@ -496,10 +580,25 @@
   </div>
 
   <script>
-    // Load products from localStorage or default
-    let products = JSON.parse(localStorage.getItem('softpower_products')) || [];
+    // Load products from JSON file (same source as the store)
+    let products = [];
     
-    // If no products, load from default data
+    async function loadProducts() {
+      try {
+        const res = await fetch('data/products.json', { cache: 'no-store' });
+        products = await res.json();
+        renderProducts();
+      } catch (e) {
+        console.error('Error loading products:', e);
+        products = [];
+        renderProducts();
+      }
+    }
+    
+    // Load on start
+    loadProducts();
+    
+    /* // Original localStorage code disabled - using JSON file instead
     if (products.length === 0) {
       products = [
         {
@@ -717,12 +816,98 @@
       return 'Entendi! Para editar um produto, clique no botão "✏️ Editar" no card do produto. Quer que eu ajude com algo específico?';
     }
     
-    document.getElementById('chat-input').addEventListener('keypress', function(e) {
+    
+// File attachment handling
+const fileInput = document.getElementById('file-input');
+const chatPreview = document.getElementById('chat-preview');
+
+fileInput.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Arquivo muito grande. Máximo 5MB.');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      chatPreview.src = e.target.result;
+      chatPreview.classList.add('visible');
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+
+document.getElementById('chat-input').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') sendMessage();
     });
     
-    // Initial render
-    renderProducts();
+    // Initial render - now handled in loadProducts()
   </script>
+<script>
+// Admin Authentication
+const AUTH_API = '/.netlify/functions/adminAuth';
+
+async function checkAuth() {
+  const token = localStorage.getItem('admin_token');
+  if (!token) {
+    document.getElementById('login-modal').classList.remove('hidden');
+    return false;
+  }
+  
+  try {
+    const res = await fetch(AUTH_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'verify', token })
+    });
+    const data = await res.json();
+    
+    if (!data.valid) {
+      localStorage.removeItem('admin_token');
+      document.getElementById('login-modal').classList.remove('hidden');
+      return false;
+    }
+    return true;
+  } catch (e) {
+    // If API not available, allow access in dev mode
+    console.warn('Auth API not available, allowing access');
+    return true;
+  }
+}
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const user = document.getElementById('login-user').value;
+  const pass = document.getElementById('login-pass').value;
+  const errorEl = document.getElementById('login-error');
+  
+  try {
+    const res = await fetch(AUTH_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'login', username: user, password: pass })
+    });
+    const data = await res.json();
+    
+    if (data.success) {
+      localStorage.setItem('admin_token', data.token);
+      document.getElementById('login-modal').classList.add('hidden');
+    } else {
+      errorEl.textContent = data.error || 'Erro ao fazer login';
+      errorEl.style.display = 'block';
+    }
+  } catch (e) {
+    // Dev mode - allow any login
+    localStorage.setItem('admin_token', 'dev-token');
+    document.getElementById('login-modal').classList.add('hidden');
+  }
+});
+
+// Check auth on load
+checkAuth();
+</script>
+
 </body>
 </html>

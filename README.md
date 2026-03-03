@@ -472,3 +472,160 @@ const CONFIG = {
 ```
 
 Para trocar, edite esse valor.
+
+---
+
+## 📋 Onde Alterar o Quê
+
+| O que alterar | Arquivo | Linha/Seção |
+|--------------|---------|-------------|
+| WhatsApp da loja | `assets/js/main.js` | `whatsapp: '5511958882556'` |
+| Catálogo de produtos | `data/products.json` | Todo o arquivo |
+| Botão orçamento home | `index.html` | Linha 47-48 |
+| Texto do orçamento | `assets/js/main.js` | Função `orcamentoForm` |
+| Logo (header) | `assets/img/logo-full.svg` | Arquivo SVG |
+| Favicon | `assets/img/favicon.svg` | Arquivo SVG |
+| Cores/Tema | `assets/css/style.css` | Variáveis CSS `:root` |
+| Slider promoções | `assets/js/main.js` | Seção `promo-slider` |
+
+---
+
+## 🔧 Variáveis de Ambiente (Netlify)
+
+### Variáveis Obrigatórias
+
+```bash
+# WhatsApp da loja (sem +55)
+VITE_STORE_WHATSAPP=5511958882556
+
+# Google Reviews (opcional)
+VITE_GOOGLE_REVIEW_URL=https://...
+
+# Supabase (opcional - para dashboard avançada)
+VITE_SUPABASE_URL=https://xxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=xxxx
+
+# Mercado Pago (opcional - para pagamentos)
+MP_ACCESS_TOKEN=xxxx
+MP_WEBHOOK_SECRET=xxxx
+```
+
+### Como configurar no Netlify
+
+1. Acesse o painel do Netlify
+2. Vá em **Site settings > Environment > Variables**
+3. Adicione cada variável
+4. Faça um novo deploy
+
+---
+
+## 📁 Estrutura de Arquivos
+
+### Páginas HTML (raiz)
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `index.html` | Homepage |
+| `loja.html` | Catálogo de produtos |
+| `produto.html` | Detalhes do produto |
+| `carrinho.html` | Carrinho de compras |
+| `checkout.html` | Finalização de pedido |
+| `orcamento.html` | Formulário de orçamento |
+| `servicos.html` | Página de serviços |
+| `sobre.html` | Sobre a empresa |
+| `contato.html` | Página de contato |
+| `anuncios.html` | Anúncios/promoções |
+| `admin.html` | Painel admin (sem link público) |
+| `dashpedidos.html` | Dashboard de pedidos |
+| `obrigado.html` | Página de obrigado |
+
+### Assets
+
+| Pasta | Conteúdo |
+|-------|----------|
+| `assets/css/` | Arquivos de estilo |
+| `assets/js/` | Scripts JavaScript |
+| `assets/img/` | Imagens e logos |
+| `assets/products/` | Imagens de produtos |
+| `data/` | Arquivos JSON (catálogo) |
+| `netlify/functions/` | Serverless functions |
+
+---
+
+## 🔄 Tipos de Itens (produto vs serviço)
+
+O catálogo usa o campo `tipo`:
+
+```json
+{
+  "id": "formatacao-premium",
+  "nome": "Formatação Premium",
+  "tipo": "servico",
+  "preco": 150
+}
+```
+
+- `tipo: "produto"` → Mostra botão "Comprar"
+- `tipo: "servico"` → Mostra botão "Solicitar serviço" (WhatsApp)
+
+---
+
+## 🚀 Como Funciona o Site
+
+1. **Catálogo:** Lê de `data/products.json`
+2. **Slider:** Mostra itens com `destaque: true` ou `badge: "Promo"`
+3. **Serviços:** Itens com `tipo: "servico"` usam WhatsApp
+4. **Checkout:** Gera mensagem para WhatsApp da loja
+
+---
+
+## ⚙️ Admin Panel
+
+### Acesso
+
+- **URL:** `/admin.html` (sem link público)
+- **Arquivo:** `admin.html` na raiz
+
+### Funcionalidades
+
+- Lista produtos do catálogo real (data/products.json)
+- Editar produtos (nome, preço, descrição, imagem)
+- Criar novos produtos
+- Excluir produtos
+- Visualizar pedidos (futuro)
+
+### Como editar produtos
+
+1. Acesse `/admin.html`
+2. Clique em um produto
+3. Edite os campos
+4. Clique "Salvar"
+5. **Nota:** As alterações são salvas no localStorage do navegador. Para persistir, edite manualmente o arquivo `data/products.json`.
+
+---
+
+## 🔐 Segurança
+
+### Arquivos sensíveis (NÃO commitados)
+
+- `.env` - Variáveis de ambiente
+- Credenciais de API
+- Tokens de acesso
+
+### O que já está protegido
+
+- `netlify.toml` define cache headers
+- Arquivos de função não expõem secrets
+- Nenhum dado pessoal armazenado
+
+---
+
+## 📞 Suporte
+
+- **WhatsApp:** (11) 95888-2556
+- **Endereço:** Av. Inocêncio Serafico, 129 - Carapicuíba/SP
+- **Email:** (verificar)
+
+---
+
+*Última atualização: 2026-03-03*
