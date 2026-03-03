@@ -980,9 +980,23 @@ body { background: var(--bg); color: var(--text); }
 .logo-img { width: clamp(120px, 18vw, 180px); height: auto; object-fit: contain; }
 
 .header .logo img {
-  height: 40px;
-  width: auto;
+  height: 60px;
+  width: 100%;
+  max-width: none;
   object-fit: contain;
+  padding: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .header .logo img {
+    height: 55px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header .logo img {
+    height: 50px;
+  }
 }
 .nav-logo-icon { width: 30px; height: 30px; object-fit: contain; }
 .hero-brand { display: flex; justify-content: center; margin-bottom: 18px; }
