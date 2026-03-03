@@ -978,6 +978,12 @@ body { background: var(--bg); color: var(--text); }
 
 
 .logo-img { width: clamp(120px, 18vw, 180px); height: auto; object-fit: contain; }
+
+.header .logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
 .nav-logo-icon { width: 30px; height: 30px; object-fit: contain; }
 .hero-brand { display: flex; justify-content: center; margin-bottom: 18px; }
 .hero-logo { width: clamp(140px, 18vw, 220px); filter: drop-shadow(0 10px 24px rgba(11,78,91,.18)); }
@@ -985,6 +991,12 @@ body { background: var(--bg); color: var(--text); }
 .service-quote-cta h3 { margin-bottom: 10px; }
 .service-quote-cta p { margin-bottom: 18px; color: var(--text-muted); }
 
+
+.logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
 .logo-fallback { display: inline-flex; align-items: center; gap: 8px; }
 .header-inner { display:grid; grid-template-columns: auto 1fr auto; gap: 16px; }
 .nav { justify-content: center; }
