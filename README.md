@@ -252,10 +252,223 @@ Atualmente é placeholder para integrar depois com Mercado Pago / Stripe.
 
 ## Configuração manual (produção)
 
-1. Defina variáveis no Netlify: `VITE_STORE_WHATSAPP`, `VITE_GOOGLE_REVIEW_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`.
-2. Crie no Supabase as tabelas:
-   - `product_reviews(id uuid, product_id text, name text, rating int, comment text, created_at timestamptz)`
-   - `orders(id uuid, itens jsonb, total numeric, status text, created_at timestamptz, payment_id text, customer jsonb)`
-3. Configure webhook do Mercado Pago para `https://SEU_DOMINIO/.netlify/functions/webhookPayment`.
-4. Configure URL pública de avaliações Google em `VITE_GOOGLE_REVIEW_URL`.
-5. Publique `logo.png` na raiz para ativar logotipo automático.
+### Variáveis de Ambiente (Netlify)
+
+Defina no Netlify:
+```bash
+VITE_STORE_WHATSAPP=5511958882556
+VITE_GOOGLE_REVIEW_URL=https://...
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_ANON_KEY=xxxx
+MP_ACCESS_TOKEN=xxxx
+MP_WEBHOOK_SECRET=xxxx
+```
+
+---
+
+### Banco de Dados (Supabase)
+
+Crie no Supabase as seguintes tabelas:
+
+#### 1) Produtos (para Dashboard)
+```sql
+CREATE TABLE products (
+  id TEXT PRIMARY KEY,
+  nome TEXT NOT NULL,
+  categoria TEXT,
+  preco NUMERIC NOT NULL,
+  descricao TEXT,
+  destaque BOOLEAN DEFAULT false,
+  badge TEXT,
+  imagem TEXT,
+  estoque INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+#### 2) Clientes
+```sql
+CREATE TABLE clients (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  phone TEXT UNIQUE,
+  first_name TEXT,
+  last_name TEXT,
+  consent_lgpd BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  last_seen_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+#### 3) Pedidos/Orçamentos
+```sql
+CREATE TABLE orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  source TEXT DEFAULT 'site', -- 'site' ou 'whatsapp'
+  client_name TEXT,
+  client_phone TEXT,
+  itens JSONB,
+  total NUMERIC DEFAULT 0,
+  status TEXT DEFAULT 'pendente', -- 'pendente', 'pago', 'reprovado', 'entregue'
+  forma_pagamento TEXT, -- 'pix', 'cartao', 'boleto'
+  payment_id TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  notes TEXT
+);
+```
+
+#### 4) Orçamentos (SofiPower)
+```sql
+CREATE TABLE quotes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  client_name TEXT,
+  client_phone TEXT,
+  type TEXT, -- 'venda' ou 'servico'
+  category TEXT,
+  description TEXT,
+  urgency TEXT DEFAULT 'media', -- 'baixa', 'media', 'alta'
+  priority TEXT DEFAULT 'normal', -- 'normal', 'urgente'
+  status TEXT DEFAULT 'aberto', -- 'aberto', 'em_andamento', 'fechado', 'perdido'
+  estimated_value NUMERIC,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+#### 5) Avaliações
+```sql
+CREATE TABLE product_reviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  product_id TEXT,
+  name TEXT,
+  rating INT,
+  comment TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+### Status de Pedidos
+
+| Status | Significado |
+|--------|-------------|
+| `pendente` | Aguardando pagamento |
+| `pago` | Pago e confirmado |
+| `reprovado` | Pagamento recusado |
+| `entregue` | Produto/serviço entregue |
+
+---
+
+### Prioridade e Urgência (Orçamentos)
+
+| Campo | Valores |
+|-------|---------|
+| `urgencia` | `baixa`, `media`, `alta` |
+| `priority` | `normal`, `urgente` |
+
+---
+
+### Fluxo de Vendas
+
+```
+Cliente compra no Site
+    ↓
+Gateway pagamento (Mercado Pago / PIX)
+    ↓
+Webhook → Atualiza status no banco (pago/pendente)
+    ↓
+Admin confirma recebimento
+    ↓
+PowerAdmin pode verificar
+```
+
+---
+
+### Como a SofiPower salva Orçamento
+
+1. Cliente fecha orçamento no WhatsApp
+2. SofiPower salva na tabela `quotes`
+3. Dashboard exibe em "Orçamentos/Serviços"
+
+---
+
+### Como o PowerAdmin controla
+
+**Você pergunta:**
+> "Power, quais pedidos pagos temos?"
+
+**PowerAdmin responde:**
+> "Temos 5 pedidos pagos hoje!
+> | ID | Cliente | Valor | Status |
+> |-----|---------|-------|--------|
+> | 001 | João | R$500 | ✅ Pago |
+> | 002 | Maria | R$300 | ✅ Pago |"
+
+**Para marcar como pago:**
+> "Power, marca o pedido 001 como pago"
+
+---
+
+### Dashboard - Telas
+
+1. **Produtos** - Editar catálogo
+2. **Pedidos** - Ver compras do site (com status)
+3. **Orçamentos/Serviços** - Ver orçamentos da SofiPower (com prioridade/urgência)
+```sql
+CREATE TABLE product_reviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  product_id TEXT,
+  name TEXT,
+  rating INT,
+  comment TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+### Dashboard Administrativa
+
+Para editar produtos em tempo real:
+
+1. **Crie um projeto no Supabase** (supabase.com)
+2. **Configure as tabelas** acima
+3. **Crie uma dashboard** que:
+   - Faz login admin
+   - Lista produtos do Supabase
+   - Permite editar: nome, preco, descricao, categoria, destaque, badge, imagem, estoque
+   - Ao salvar → atualiza no Supabase → site atualiza instantaneamente
+
+4. **Variáveis da Dashboard:**
+   ```
+   VITE_SUPABASE_URL=xxxx
+   VITE_SUPABASE_ANON_KEY=xxxx
+   ```
+
+---
+
+### Atualização Instantânea
+
+Fluxo:
+```
+Dashboard → API → Supabase → Site (lê do banco)
+```
+
+- Dashboard edita produto → Salva no Supabase
+- Site modifica para ler do Supabase (em vez de products.json)
+- Atualização é instantânea (sem deploy)
+
+---
+
+### Número do WhatsApp da Loja
+
+Definido em `assets/js/main.js`:
+```js
+const CONFIG = {
+  whatsapp: '5511958882556'
+};
+```
+
+Para trocar, edite esse valor.
