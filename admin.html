@@ -267,7 +267,36 @@
       border-color: var(--primary);
     }
     
-    .chat-input .btn-send {
+    
+    .chat-input .btn-attach {
+      padding: 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-input .btn-attach:hover {
+      border-color: var(--primary);
+    }
+    .chat-input #file-input {
+      display: none;
+    }
+    .chat-preview {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+    }
+    .chat-preview.visible {
+      display: block;
+    }
+
+.chat-input .btn-send {
       padding: 12px 20px;
       background: var(--primary);
       border: none;
@@ -463,6 +492,10 @@
         </div>
       </div>
       <div class="chat-input">
+        <label for="file-input" class="btn-attach" title="Anexar imagem">📎</label>
+        <input type="file" id="file-input" accept="image/*">
+        <img id="chat-preview" class="chat-preview" alt="Preview">
+        <input type="text" id="product-id-input" placeholder="ID do produto (opcional)" style="width: 140px;">
         <input type="text" id="chat-input" placeholder="Digite sua mensagem...">
         <button class="btn-send" onclick="sendMessage()">➤</button>
       </div>
@@ -783,7 +816,30 @@
       return 'Entendi! Para editar um produto, clique no botão "✏️ Editar" no card do produto. Quer que eu ajude com algo específico?';
     }
     
-    document.getElementById('chat-input').addEventListener('keypress', function(e) {
+    
+// File attachment handling
+const fileInput = document.getElementById('file-input');
+const chatPreview = document.getElementById('chat-preview');
+
+fileInput.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Arquivo muito grande. Máximo 5MB.');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      chatPreview.src = e.target.result;
+      chatPreview.classList.add('visible');
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+
+document.getElementById('chat-input').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') sendMessage();
     });
     
