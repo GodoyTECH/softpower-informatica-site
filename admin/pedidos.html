@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoftPower Admin - Pedidos & Serviços</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --primary: #ff6b00;
+      --primary-dark: #e55a00;
+      --bg-dark: #1a1a1a;
+      --bg-card: #252525;
+      --bg-input: #333;
+      --text: #fff;
+      --text-muted: #aaa;
+      --border: #444;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --danger: #f44336;
+      --info: #2196f3;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    .header {
+      background: var(--bg-card);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+    
+    .header nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .header nav a:hover, .header nav a.active {
+      color: var(--primary);
+    }
+    
+    /* Container */
+    .container {
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    
+    .tab {
+      padding: 12px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    
+    .tab:hover {
+      color: var(--text);
+    }
+    
+    .tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 15px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    
+    .search-box:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .filter-box {
+      padding: 10px 15px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .stat-card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .stat-card .label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+    
+    /* Table */
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      background: var(--bg-input);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    
+    tr:hover {
+      background: var(--bg-input);
+    }
+    
+    /* Status Badges */
+    .status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .status-pendente { background: var(--warning); color: #000; }
+    .status-pago { background: var(--success); color: #fff; }
+    .status-reprovado { background: var(--danger); color: #fff; }
+    .status-entregue { background: var(--info); color: #fff; }
+    
+    /* Priority */
+    .priority {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    
+    .priority-alta { background: var(--danger); color: #fff; }
+    .priority-media { background: var(--warning); color: #000; }
+    .priority-baixa { background: var(--text-muted); color: #000; }
+    
+    .priority-urgente { background: var(--danger); color: #fff; }
+    .priority-normal { background: var(--success); color: #fff; }
+    
+    /* Action Buttons */
+    .btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 50px;
+      color: var(--text-muted);
+    }
+    
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 25px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-content h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    
+    .form-group select {
+      width: 100%;
+      padding: 10px 15px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .modal-actions .btn {
+      flex: 1;
+    }
+    
+    .btn-secondary {
+      background: var(--bg-input);
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🖥️ SoftPower Admin</h1>
+    <nav>
+      <a href="index.html">Produtos</a>
+      <a href="pedidos.html" class="active">Pedidos & Serviços</a>
+    </nav>
+  </div>
+  
+  <div class="container">
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('pedidos')">📦 Pedidos do Site</div>
+      <div class="tab" onclick="switchTab('orcamentos')">💼 Orçamentos/Serviços</div>
+    </div>
+    
+    <!-- Pedidos Tab -->
+    <div class="tab-content active" id="pedidos-tab">
+      <div class="stats">
+        <div class="stat-card">
+          <div class="number" id="pedidos-pendentes">0</div>
+          <div class="label">Pendentes</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="pedidos-pagos">0</div>
+          <div class="label">Pagos</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="pedidos-total">R$ 0</div>
+          <div class="label">Total Vendido</div>
+        </div>
+      </div>
+      
+      <div class="toolbar">
+        <input type="text" class="search-box" id="search-pedidos" placeholder="Buscar pedidos...">
+        <select class="filter-box" id="filter-status">
+          <option value="">Todos os status</option>
+          <option value="pendente">Pendente</option>
+          <option value="pago">Pago</option>
+          <option value="reprovado">Reprovado</option>
+          <option value="entregue">Entregue</option>
+        </select>
+      </div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Itens</th>
+              <th>Total</th>Forma Pag.>
+              <th</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="pedidos-table">
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Orçamentos Tab -->
+    <div class="tab-content" id="orcamentos-tab">
+      <div class="stats">
+        <div class="stat-card">
+          <div class="number" id="orcamentos-abertos">0</div>
+          <div class="label">Abertos</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="orcamentos-urgentes">0</div>
+          <div class="label">Urgentes</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" id="orcamentos-fechados">0</div>
+          <div class="label">Fechados</div>
+        </div>
+      </div>
+      
+      <div class="toolbar">
+        <input type="text" class="search-box" id="search-orcamentos" placeholder="Buscar orçamentos...">
+        <select class="filter-box" id="filter-urgencia">
+          <option value="">Todas as urgências</option>
+          <option value="alta">Alta</option>
+          <option value="media">Média</option>
+          <option value="baixa">Baixa</option>
+        </select>
+        <select class="filter-box" id="filter-status-orcamento">
+          <option value="">Todos os status</option>
+          <option value="aberto">Aberto</option>
+          <option value="em_andamento">Em Andamento</option>
+          <option value="fechado">Fechado</option>
+          <option value="perdido">Perdido</option>
+        </select>
+      </div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Urgência</th>
+              <th>Status</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="orcamentos-table">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Update Status Modal -->
+  <div class="modal" id="update-modal">
+    <div class="modal-content">
+      <h2>Atualizar Status</h2>
+      <form id="update-form">
+        <input type="hidden" id="update-id">
+        <input type="hidden" id="update-type">
+        
+        <div class="form-group">
+          <label>Novo Status</label>
+          <select id="new-status" required>
+          </select>
+        </div>
+        
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Atualizar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Load data from localStorage
+    let orders = JSON.parse(localStorage.getItem('softpower_orders')) || [];
+    let quotes = JSON.parse(localStorage.getItem('softpower_quotes')) || [];
+    
+    // Demo data if empty
+    if (orders.length === 0) {
+      orders = [
+        {
+          id: 'PED-001',
+          client_name: 'João Silva',
+          client_phone: '+5511999999999',
+          itens: [{nome: 'SSD 480GB', qtd: 1, preco: 259.90}],
+          total: 259.90,
+          forma_pagamento: 'pix',
+          status: 'pago',
+          created_at: '2026-03-03'
+        },
+        {
+          id: 'PED-002',
+          client_name: 'Maria Santos',
+          client_phone: '+5511888888888',
+          itens: [{nome: 'Mouse Gamer', qtd: 2, preco: 159.90}],
+          total: 319.80,
+          forma_pagamento: 'cartao',
+          status: 'pendente',
+          created_at: '2026-03-02'
+        }
+      ];
+      saveData();
+    }
+    
+    if (quotes.length === 0) {
+      quotes = [
+        {
+          id: 'ORC-001',
+          client_name: 'Carlos Oliveira',
+          client_phone: '+5511777777777',
+          type: 'servico',
+          category: 'Formatação',
+          description: 'Formatação Windows 10 + instalação de programas',
+          urgency: 'alta',
+          priority: 'urgente',
+          estimated_value: 150.00,
+          status: 'aberto',
+          created_at: '2026-03-03'
+        },
+        {
+          id: 'ORC-002',
+          client_name: 'Ana Costa',
+          client_phone: '+5511666666666',
+          type: 'venda',
+          category: 'Upgrades',
+          description: 'Upgrade de memória RAM para 32GB',
+          urgency: 'media',
+          priority: 'normal',
+          estimated_value: 450.00,
+          status: 'em_andamento',
+          created_at: '2026-03-01'
+        }
+      ];
+      saveData();
+    }
+    
+    function saveData() {
+      localStorage.setItem('softpower_orders', JSON.stringify(orders));
+      localStorage.setItem('softpower_quotes', JSON.stringify(quotes));
+    }
+    
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      
+      if (tab === 'pedidos') {
+        document.querySelectorAll('.tab')[0].classList.add('active');
+        document.getElementById('pedidos-tab').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab')[1].classList.add('active');
+        document.getElementById('orcamentos-tab').classList.add('active');
+      }
+    }
+    
+    function renderOrders() {
+      const search = document.getElementById('search-pedidos').value.toLowerCase();
+      const filter = document.getElementById('filter-status').value;
+      
+      let filtered = orders.filter(o => {
+        const matchSearch = o.client_name.toLowerCase().includes(search) || 
+                          o.id.toLowerCase().includes(search);
+        const matchFilter = !filter || o.status === filter;
+        return matchSearch && matchFilter;
+      });
+      
+      // Update stats
+      const pendentes = orders.filter(o => o.status === 'pendente').length;
+      const pagos = orders.filter(o => o.status === 'pago').length;
+      const total = orders.reduce((sum, o) => o.status === 'pago' ? sum + o.total : sum, 0);
+      
+      document.getElementById('pedidos-pendentes').textContent = pendentes;
+      document.getElementById('pedidos-pagos').textContent = pagos;
+      document.getElementById('pedidos-total').textContent = 'R$ ' + total.toFixed(2);
+      
+      const tbody = document.getElementById('pedidos-table');
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="empty-state">Nenhum pedido encontrado</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = filtered.map(o => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${o.client_name}<br><small>${o.client_phone}</small></td>
+          <td>${o.itens.map(i => `${i.qtd}x ${i.nome}`).join(', ')}</td>
+          <td><strong>R$ ${o.total.toFixed(2)}</strong></td>
+          <td>${o.forma_pagamento}</td>
+          <td><span class="status status-${o.status}">${o.status}</span></td>
+          <td>${o.created_at}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" onclick="updateStatus('${o.id}', 'order')">✏️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    
+    function renderQuotes() {
+      const search = document.getElementById('search-orcamentos').value.toLowerCase();
+      const filterUrgencia = document.getElementById('filter-urgencia').value;
+      const filterStatus = document.getElementById('filter-status-orcamento').value;
+      
+      let filtered = quotes.filter(q => {
+        const matchSearch = q.client_name.toLowerCase().includes(search) || 
+                          q.id.toLowerCase().includes(search);
+        const matchUrgencia = !filterUrgencia || q.urgency === filterUrgencia;
+        const matchStatus = !filterStatus || q.status === filterStatus;
+        return matchSearch && matchUrgencia && matchStatus;
+      });
+      
+      // Update stats
+      const abertos = quotes.filter(q => q.status === 'aberto').length;
+      const urgentes = quotes.filter(q => q.urgency === 'alta' || q.priority === 'urgente').length;
+      const fechados = quotes.filter(q => q.status === 'fechado').length;
+      
+      document.getElementById('orcamentos-abertos').textContent = abertos;
+      document.getElementById('orcamentos-urgentes').textContent = urgentes;
+      document.getElementById('orcamentos-fechados').textContent = fechados;
+      
+      const tbody = document.getElementById('orcamentos-table');
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state">Nenhum orçamento encontrado</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = filtered.map(q => `
+        <tr>
+          <td><strong>${q.id}</strong></td>
+          <td>${q.client_name}<br><small>${q.client_phone}</small></td>
+          <td>${q.type === 'venda' ? '📦 Venda' : '🔧 Serviço'}</td>
+          <td>${q.description.substring(0, 50)}...</td>
+          <td><strong>R$ ${(q.estimated_value || 0).toFixed(2)}</strong></td>
+          <td>
+            <span class="priority priority-${q.urgency}">${q.urgency}</span>
+            ${q.priority === 'urgente' ? '<br><span class="priority priority-urgente">⚡</span>' : ''}
+          </td>
+          <td><span class="status status-${q.status === 'em_andamento' ? 'pago' : q.status}">${q.status}</span></td>
+          <td>${q.created_at}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" onclick="updateStatus('${q.id}', 'quote')">✏️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+    
+    function updateStatus(id, type) {
+      const modal = document.getElementById('update-modal');
+      const select = document.getElementById('new-status');
+      
+      document.getElementById('update-id').value = id;
+      document.getElementById('update-type').value = type;
+      
+      // Clear and populate options
+      select.innerHTML = '';
+      
+      if (type === 'order') {
+        ['pendente', 'pago', 'reprovado', 'entregue'].forEach(s => {
+          select.innerHTML += `<option value="${s}">${s.charAt(0).toUpperCase() + s.slice(1)}</option>`;
+        });
+      } else {
+        ['aberto', 'em_andamento', 'fechado', 'perdido'].forEach(s => {
+          select.innerHTML += `<option value="${s}">${s.replace('_', ' ').charAt(0).toUpperCase() + s.replace('_', ' ').slice(1)}</option>`;
+        });
+      }
+      
+      modal.classList.add('active');
+    }
+    
+    function closeModal() {
+      document.getElementById('update-modal').classList.remove('active');
+    }
+    
+    document.getElementById('update-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const id = document.getElementById('update-id').value;
+      const type = document.getElementById('update-type').value;
+      const status = document.getElementById('new-status').value;
+      
+      if (type === 'order') {
+        const index = orders.findIndex(o => o.id === id);
+        if (index !== -1) {
+          orders[index].status = status;
+        }
+      } else {
+        const index = quotes.findIndex(q => q.id === id);
+        if (index !== -1) {
+          quotes[index].status = status;
+        }
+      }
+      
+      saveData();
+      renderOrders();
+      renderQuotes();
+      closeModal();
+    });
+    
+    // Event listeners
+    document.getElementById('search-pedidos').addEventListener('input', renderOrders);
+    document.getElementById('filter-status').addEventListener('change', renderOrders);
+    document.getElementById('search-orcamentos').addEventListener('input', renderQuotes);
+    document.getElementById('filter-urgencia').addEventListener('change', renderQuotes);
+    document.getElementById('filter-status-orcamento').addEventListener('change', renderQuotes);
+    
+    // Initial render
+    renderOrders();
+    renderQuotes();
+  </script>
+</body>
+</html>
