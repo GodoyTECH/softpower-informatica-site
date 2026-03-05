@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoftPower Admin - Promoções</title>
+  <link rel="icon" href="assets/img/logo.png" type="image/png">
+  <style>
+    body{font-family:Segoe UI,system-ui,sans-serif;background:#1a1a1a;color:#fff;margin:0}
+    .header{display:flex;justify-content:space-between;padding:14px 20px;background:#252525;border-bottom:1px solid #444}
+    .header a{color:#aaa;text-decoration:none;margin-left:16px}.header a.active,.header a:hover{color:#ff6b00}
+    .wrap{max-width:1100px;margin:20px auto;padding:0 14px}
+    .card{background:#252525;border:1px solid #444;border-radius:12px;padding:16px}
+    .row{display:grid;grid-template-columns:1fr 1fr 120px 120px 120px;gap:10px;align-items:center;margin-bottom:10px}
+    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #444;background:#333;color:#fff}
+    .btn{padding:10px 12px;border:0;border-radius:8px;cursor:pointer}
+    .btn-primary{background:#ff6b00;color:#fff}.btn-outline{background:#333;color:#fff;border:1px solid #444}
+    .hint{color:#aaa;font-size:13px}
+    @media (max-width: 900px){.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <strong>🖥️ SoftPower Admin</strong>
+    <nav>
+      <a href="admin.html">Produtos</a>
+      <a href="admin-promocoes.html" class="active">Promoções</a>
+      <a href="dashpedidos.html">Pedidos & Serviços</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <h2>Promoções (slider)</h2>
+      <p class="hint">Cada promoção referencia item real do catálogo por ID.</p>
+      <div id="list"></div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button id="add" class="btn btn-outline">+ Nova promoção</button>
+        <button id="save" class="btn btn-primary">Salvar override local</button>
+        <button id="reset" class="btn btn-outline">Resetar override</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+let items=[]; let promotions=[];
+const KEY='softpower_promotions_override_v1';
+
+const uid=()=>`promo-${Date.now()}-${Math.floor(Math.random()*1000)}`;
+
+async function boot(){
+  items = await fetch('data/products.json').then(r=>r.json()).catch(()=>[]);
+  const base = await fetch('data/promotions.json').then(r=>r.json()).catch(()=>[]);
+  const local = localStorage.getItem(KEY);
+  promotions = local ? JSON.parse(local) : base;
+  render();
+}
+
+function itemOptions(selected){
+  return items.map(i=>`<option value="${i.id}" ${i.id===selected?'selected':''}>${i.id} — ${i.nome}</option>`).join('');
+}
+
+function render(){
+  const list=document.getElementById('list');
+  list.innerHTML = promotions.map((p,idx)=>`
+    <div class="row" data-i="${idx}">
+      <select data-k="item_id">${itemOptions(p.item_id)}</select>
+      <input data-k="headline" value="${p.headline||''}" placeholder="Headline" />
+      <input data-k="subtext" value="${p.subtext||''}" placeholder="Subtexto" />
+      <input data-k="sort_order" type="number" value="${Number(p.sort_order||0)}" />
+      <select data-k="is_active"><option value="true" ${p.is_active?'selected':''}>Ativa</option><option value="false" ${!p.is_active?'selected':''}>Inativa</option></select>
+      <input data-k="id" value="${p.id}" readonly title="ID promoção"/>
+      <button class="btn btn-outline" data-del="${idx}">Remover</button>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('.row').forEach(r=>{
+    const i=Number(r.dataset.i);
+    r.querySelectorAll('[data-k]').forEach(el=>{
+      el.addEventListener('change',()=>{
+        const k=el.dataset.k;
+        promotions[i][k] = (k==='sort_order')?Number(el.value):(k==='is_active'?el.value==='true':el.value);
+      });
+    });
+  });
+  list.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{promotions.splice(Number(b.dataset.del),1);render();}));
+}
+
+document.getElementById('add').addEventListener('click',()=>{
+  promotions.push({id:uid(),item_id:items[0]?.id||'',headline:'',subtext:'',sort_order:promotions.length+1,is_active:true});
+  render();
+});
+
+document.getElementById('save').addEventListener('click',()=>{
+  localStorage.setItem(KEY, JSON.stringify(promotions));
+  alert('Override salvo no navegador. O slider usará esse conteúdo neste browser.');
+});
+
+document.getElementById('reset').addEventListener('click',()=>{localStorage.removeItem(KEY);location.reload();});
+
+boot();
+</script>
+</body>
+</html>

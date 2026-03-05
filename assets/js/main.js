@@ -45,10 +45,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const promoWrap = document.getElementById('promo-slider');
   if (promoWrap) {
-    const [products, promotions] = await Promise.all([
+    const [products, promotionsBase] = await Promise.all([
       fetch('data/products.json').then((r) => r.json()).catch(() => []),
       fetch('data/promotions.json').then((r) => r.json()).catch(() => [])
     ]);
+    const promotionsOverride = (() => {
+      try { return JSON.parse(localStorage.getItem('softpower_promotions_override_v1') || 'null'); } catch { return null; }
+    })();
+    const promotions = Array.isArray(promotionsOverride) ? promotionsOverride : promotionsBase;
 
     const map = new Map(products.map((p) => [p.id, p]));
     const promos = promotions

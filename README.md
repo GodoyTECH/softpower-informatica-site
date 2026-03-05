@@ -66,6 +66,7 @@ Template enviado:
 
 ### Páginas
 - `admin.html` (produtos)
+- `admin-promocoes.html` (promoções/slider)
 - `dashpedidos.html` (pedidos/serviços)
 
 ### Observação importante
