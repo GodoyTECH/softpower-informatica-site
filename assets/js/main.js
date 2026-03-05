@@ -3,7 +3,9 @@ window.APP_CONFIG = {
   googleReviewUrl: window.APP_CONFIG?.googleReviewUrl || '',
   supabaseUrl: window.APP_CONFIG?.supabaseUrl || '',
   supabaseAnonKey: window.APP_CONFIG?.supabaseAnonKey || '',
-  WHATSAPP_ONLY_MODE: true
+  WHATSAPP_ONLY_MODE: true,
+  HIDE_LOJA_PAGE: true,
+  HIDE_CARRINHO_PAGE: true
 };
 
 const STORE_WHATSAPP_NUMBER = String(window.APP_CONFIG.whatsapp).replace(/\D/g, '');
@@ -27,6 +29,27 @@ function openWhatsApp(message) {
   window.open(`https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
 }
 
+function hidePageLinks() {
+  const hideLoja = !!window.APP_CONFIG.HIDE_LOJA_PAGE;
+  const hideCarrinho = !!window.APP_CONFIG.HIDE_CARRINHO_PAGE;
+
+  if (hideLoja) {
+    document.querySelectorAll('a[href*="loja.html"]').forEach((el) => {
+      el.setAttribute('aria-hidden', 'true');
+      el.setAttribute('tabindex', '-1');
+      el.classList.add('is-whatsapp-only-hidden');
+    });
+  }
+
+  if (hideCarrinho) {
+    document.querySelectorAll('a[href*="carrinho.html"]').forEach((el) => {
+      el.setAttribute('aria-hidden', 'true');
+      el.setAttribute('tabindex', '-1');
+      el.classList.add('is-whatsapp-only-hidden');
+    });
+  }
+}
+
 function applyWhatsAppOnlyMode() {
   if (!window.APP_CONFIG.WHATSAPP_ONLY_MODE) return;
   document.querySelectorAll('#pay-online,[data-buy],#buy-now').forEach((el) => {
@@ -37,6 +60,7 @@ function applyWhatsAppOnlyMode() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  hidePageLinks();
   applyWhatsAppOnlyMode();
 
   const menuToggle = document.querySelector('.menu-toggle');

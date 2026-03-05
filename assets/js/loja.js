@@ -92,6 +92,14 @@ function renderProducts(products) {
 
 (async function init() {
   try {
+    if (window.APP_CONFIG?.HIDE_LOJA_PAGE) {
+      const container = document.querySelector('.container');
+      if (container) {
+        container.innerHTML = `<div class="card" style="padding:24px; text-align:center;"><h1>Loja temporariamente indisponível</h1><p class="text-muted">No momento, os pedidos estão sendo feitos diretamente pelo WhatsApp.</p><a class="btn btn-whatsapp" target="_blank" rel="noopener" href="https://wa.me/${STORE_CONFIG.STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent('Olá! Vim pelo site da Soft Power Informática e quero atendimento.')}">Falar no WhatsApp</a></div>`;
+      }
+      return;
+    }
+
     const products = await loadProducts();
     renderFilters(products);
     renderProducts(products);

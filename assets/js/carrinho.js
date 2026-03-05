@@ -1,7 +1,13 @@
 import { getCart, updateItemQuantity, removeFromCart, getCartTotals } from './cart.js';
 import { formatBRL } from './products.js';
 
-function render() {
+if (window.APP_CONFIG?.HIDE_CARRINHO_PAGE) {
+  const main = document.querySelector('main, .container, body');
+  if (main) {
+    main.innerHTML = `<div class="card" style="padding:24px; text-align:center; margin:16px;"><h1>Carrinho temporariamente indisponível</h1><p class="text-muted">Para pedidos, fale direto com a Soft Power no WhatsApp.</p><a class="btn btn-whatsapp" target="_blank" rel="noopener" href="https://wa.me/${(window.APP_CONFIG?.whatsapp || '5511958882556').replace(/\D/g,'')}?text=${encodeURIComponent('Olá! Vim pelo site da Soft Power Informática e quero fazer um pedido.')}">Falar no WhatsApp</a></div>`;
+  }
+} else {
+  function render() {
     const cart = getCart();
     const tbody = document.getElementById('cart-rows');
     const summary = document.getElementById('cart-summary');
@@ -45,4 +51,5 @@ function render() {
     window.location.href = 'checkout.html';
   });
 
-render();
+  render();
+}
