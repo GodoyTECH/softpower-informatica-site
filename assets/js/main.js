@@ -1,31 +1,86 @@
 window.APP_CONFIG = {
-  whatsapp: window.APP_CONFIG?.whatsapp || '5511958882556',
+  whatsapp: window.VITE_STORE_WHATSAPP_NUMBER || window.APP_CONFIG?.whatsapp || '5511958882556',
   googleReviewUrl: window.APP_CONFIG?.googleReviewUrl || '',
   supabaseUrl: window.APP_CONFIG?.supabaseUrl || '',
-  supabaseAnonKey: window.APP_CONFIG?.supabaseAnonKey || ''
+  supabaseAnonKey: window.APP_CONFIG?.supabaseAnonKey || '',
+  WHATSAPP_ONLY_MODE: true
 };
 
+const STORE_WHATSAPP_NUMBER = String(window.APP_CONFIG.whatsapp).replace(/\D/g, '');
+
+function buildWhatsAppMessage(item = {}) {
+  return [
+    'Olá! Vim pelo site da Soft Power Informática.',
+    'Tenho interesse neste item:',
+    '',
+    `• Item: ${item.nome || '-'}`,
+    `• Preço: ${item.precoLabel || (item.preco != null ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(item.preco || 0)) : 'Sob consulta')}`,
+    `• Detalhes: ${item.short_description || item.descricao || '-'}`,
+    `• ID: ${item.id || '-'}`,
+    `• Link: ${item.url || window.location.href}`,
+    '',
+    'Pode me passar disponibilidade e formas de pagamento?'
+  ].join('\n');
+}
+
+function openWhatsApp(message) {
+  window.open(`https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
+}
+
+function applyWhatsAppOnlyMode() {
+  if (!window.APP_CONFIG.WHATSAPP_ONLY_MODE) return;
+  document.querySelectorAll('a[href*="carrinho.html"],a[href*="checkout.html"],#go-checkout,#pay-online,[data-add],[data-buy],#add-to-cart,#buy-now').forEach((el) => {
+    el.setAttribute('aria-hidden', 'true');
+    el.setAttribute('tabindex', '-1');
+    el.classList.add('is-whatsapp-only-hidden');
+  });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+  applyWhatsAppOnlyMode();
+
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
   menuToggle?.addEventListener('click', () => nav?.classList.toggle('active'));
 
   const promoWrap = document.getElementById('promo-slider');
   if (promoWrap) {
-    const products = await fetch('data/products.json').then((r) => r.json()).catch(() => []);
-    const promos = products.filter((p) => (p.badge || '').toLowerCase().includes('promo') || p.destaque).slice(0, 6);
+    const [products, promotions] = await Promise.all([
+      fetch('data/products.json').then((r) => r.json()).catch(() => []),
+      fetch('data/promotions.json').then((r) => r.json()).catch(() => [])
+    ]);
+
+    const map = new Map(products.map((p) => [p.id, p]));
+    const promos = promotions
+      .filter((p) => p.is_active)
+      .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0))
+      .map((promo) => ({ ...promo, item: map.get(promo.item_id) }))
+      .filter((promo) => promo.item)
+      .slice(0, 6);
+
     if (promos.length) {
       let index = 0;
-      const STORE_WHATSAPP = window.APP_CONFIG?.whatsapp || '5511958882556';
-promoWrap.innerHTML = `<div class="promo-track">${promos.map((p) => `<article class="promo-slide"><div class="promo-media"><img src="${p.imagem}" alt="${p.nome}"></div><div><span class="promo-seal">${p.badge || 'Promo'}</span><h3>${p.nome}</h3><p>${p.descricao}</p>${p.tipo === 'servico' 
-  ? `<a class="btn btn-glass" target="_blank" rel="noopener" href="https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent('Olá! Quero informações sobre: ' + p.nome)}">Solicitar serviço</a>`
-  : `<a class="btn btn-glass" href="produto.html?id=${encodeURIComponent(p.id)}">Ver este item</a>`}</div></article>`).join('')}</div><div class="promo-nav"><button class="btn btn-outline" id="promo-prev">◀</button><button class="btn btn-outline" id="promo-next">▶</button></div><div class="promo-dots">${promos.map((_, i) => `<button class="promo-dot ${i === 0 ? 'active' : ''}" data-dot="${i}"></button>`).join('')}</div><p class="text-muted" id="promo-description">${promos[0].descricao}</p>`;
+      promoWrap.innerHTML = `<div class="promo-track">${promos.map((promo) => {
+        const p = promo.item;
+        const label = p.tipo === 'servico' ? 'Quero esse serviço' : 'Quero esse item';
+        return `<article class="promo-slide" data-item-id="${p.id}"><div class="promo-media"><img src="${p.imagem}" alt="${p.nome}"></div><div><span class="promo-seal">${promo.headline || p.badge || 'Promoção'}</span><h3>${p.nome}</h3><p>${promo.subtext || p.descricao}</p><button class="btn btn-glass promo-whatsapp" data-item-id="${p.id}" data-label="${label}">${label}</button></div></article>`;
+      }).join('')}</div><div class="promo-nav"><button class="btn btn-outline" id="promo-prev">◀</button><button class="btn btn-outline" id="promo-next">▶</button></div><div class="promo-dots">${promos.map((_, i) => `<button class="promo-dot ${i === 0 ? 'active' : ''}" data-dot="${i}"></button>`).join('')}</div><p class="text-muted" id="promo-description">${promos[0].subtext || promos[0].item.descricao}</p>`;
+
+      promoWrap.querySelectorAll('.promo-whatsapp').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const p = map.get(btn.dataset.itemId);
+          if (!p) return;
+          openWhatsApp(buildWhatsAppMessage({ ...p, url: `${window.location.origin}/produto.html?id=${encodeURIComponent(p.id)}` }));
+        });
+      });
+
       const track = promoWrap.querySelector('.promo-track');
       const dots = [...promoWrap.querySelectorAll('.promo-dot')];
       const update = () => {
         track.style.transform = `translateX(-${index * 100}%)`;
         dots.forEach((d, i) => d.classList.toggle('active', i === index));
-        promoWrap.querySelector('#promo-description').textContent = promos[index].descricao;
+        const active = promos[index];
+        promoWrap.querySelector('#promo-description').textContent = active.subtext || active.item.descricao;
       };
       promoWrap.querySelector('#promo-prev').onclick = () => { index = (index - 1 + promos.length) % promos.length; update(); };
       promoWrap.querySelector('#promo-next').onclick = () => { index = (index + 1) % promos.length; update(); };
@@ -36,7 +91,7 @@ promoWrap.innerHTML = `<div class="promo-track">${promos.map((p) => `<article cl
 
   document.querySelectorAll('.whatsapp-link').forEach((link) => {
     const text = link.dataset.message || '';
-    if (text) link.href = `https://wa.me/${window.APP_CONFIG.whatsapp}?text=${encodeURIComponent(text)}`;
+    if (text) link.href = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
   });
 
   const budgetForm = document.getElementById('budget-form');
@@ -47,10 +102,10 @@ promoWrap.innerHTML = `<div class="promo-track">${promos.map((p) => `<article cl
 
   const openWa = (data) => {
     const full = buildMsg(data, false);
-    let url = `https://wa.me/${window.APP_CONFIG.whatsapp}?text=${encodeURIComponent(full)}`;
+    let url = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(full)}`;
     if (url.length > 1800) {
       navigator.clipboard?.writeText(full).catch(() => {});
-      url = `https://wa.me/${window.APP_CONFIG.whatsapp}?text=${encodeURIComponent(buildMsg(data, true))}`;
+      url = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMsg(data, true))}`;
       alert('Mensagem longa: texto completo copiado para a área de transferência.');
     }
     window.location.href = url;

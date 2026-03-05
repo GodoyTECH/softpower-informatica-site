@@ -1039,3 +1039,8 @@ body { background: var(--bg); color: var(--text); }
 }
 
 @media (max-width: 768px) { .hero-logo { width: clamp(120px, 42vw, 180px); } }
+
+.is-whatsapp-only-hidden {
+  display: none !important;
+  pointer-events: none !important;
+}

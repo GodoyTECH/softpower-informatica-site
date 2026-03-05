@@ -1,9 +1,10 @@
 import { loadProducts, formatBRL, getProductById } from './products.js';
-import { addToCart, getCart, saveCart } from './cart.js';
+import { STORE_CONFIG } from './store.js';
+import { applyWhatsAppOnlyMode, buildWhatsAppMessage, openWhatsApp, createWhatsAppCTA } from './whatsapp-mode.js';
 
 const CONFIG = window.APP_CONFIG || {};
 const GOOGLE_REVIEW_URL = CONFIG.googleReviewUrl || '';
-const STORE_WHATSAPP = CONFIG.whatsapp || '5511958882556';
+const isService = (p) => p.tipo === 'servico';
 
 const ReviewsProvider = {
   async list(productId) {
@@ -20,9 +21,6 @@ const ReviewsProvider = {
   }
 };
 
-function updateCartCount() { const c = document.getElementById('cart-count'); if (c) c.textContent = String(getCart().reduce((a, i) => a + Number(i.quantity), 0)); }
-const isService = (p) => p.tipo === 'servico';
-
 async function renderReviews(productId) {
   const listEl = document.getElementById('reviews-list'); if (!listEl) return;
   const reviews = await ReviewsProvider.list(productId);
@@ -38,14 +36,14 @@ async function init() {
   try {
     const products = await loadProducts(); const p = getProductById(products, id);
     if (!p) return (wrap.innerHTML = '<p class="text-muted">Produto não encontrado.</p>');
-    const cta = isService(p)
-      ? `<a class="btn btn-glass" target="_blank" rel="noopener" href="https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent('Olá! Quero contratar o serviço: ' + p.nome)}">Solicitar serviço</a>`
-      : `<button class="btn btn-glass" id="buy-now">Comprar</button><button class="btn btn-primary" id="add-to-cart">Adicionar ao carrinho</button>`;
 
-    wrap.innerHTML = `<div class="product-layout"><img src="${p.imagem}" alt="${p.nome}"><div><span class="shop-cat">${p.categoria}</span>${p.badge ? `<span class="shop-badge">${p.badge}</span>` : ''}<h1>${p.nome}</h1><p>${p.descricao}</p><p><strong>Estoque:</strong> ${p.estoque}</p><h2>${isService(p) ? 'Sob consulta' : formatBRL(p.preco)}</h2><div class="shop-actions" style="margin-top:16px;">${cta}${GOOGLE_REVIEW_URL ? `<a class="btn btn-outline" target="_blank" rel="noopener" href="${GOOGLE_REVIEW_URL}">Avaliar no Google</a>` : ''}</div><div class="review-box"><h3>Avaliações</h3><p id="reviews-summary" class="text-muted"></p><form id="review-form"><input id="review-name" placeholder="Seu nome (opcional)"><select id="review-rating" required><option value="">Nota</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select><textarea id="review-comment" placeholder="Comentário" required></textarea><button class="btn btn-primary" type="submit">Enviar avaliação</button></form><div id="reviews-list"></div></div></div></div>`;
+    wrap.innerHTML = `<div class="product-layout" data-item-id="${p.id}"><img src="${p.imagem}" alt="${p.nome}"><div><span class="shop-cat">${p.categoria}</span>${p.badge ? `<span class="shop-badge">${p.badge}</span>` : ''}<h1>${p.nome}</h1><p>${p.descricao}</p><p><strong>Estoque:</strong> ${p.estoque}</p><h2>${isService(p) ? 'Sob consulta' : formatBRL(p.preco)}</h2><div class="shop-actions" style="margin-top:16px;">${createWhatsAppCTA(p, isService(p) ? 'Quero esse serviço' : 'Quero esse item')}${GOOGLE_REVIEW_URL ? `<a class="btn btn-outline" target="_blank" rel="noopener" href="${GOOGLE_REVIEW_URL}">Avaliar no Google</a>` : ''}</div><div class="review-box"><h3>Avaliações</h3><p id="reviews-summary" class="text-muted"></p><form id="review-form"><input id="review-name" placeholder="Seu nome (opcional)"><select id="review-rating" required><option value="">Nota</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select><textarea id="review-comment" placeholder="Comentário" required></textarea><button class="btn btn-primary" type="submit">Enviar avaliação</button></form><div id="reviews-list"></div></div></div></div>`;
 
-    document.getElementById('add-to-cart')?.addEventListener('click', () => { addToCart(p, 1); updateCartCount(); alert('Produto adicionado ao carrinho.'); });
-    document.getElementById('buy-now')?.addEventListener('click', () => { saveCart([{ id: p.id, nome: p.nome, preco: Number(p.preco || 0), imagem: p.imagem, quantity: 1 }]); window.location.href = 'checkout.html?from=buy-now'; });
+    document.querySelector('.js-whatsapp-item')?.addEventListener('click', () => {
+      const message = buildWhatsAppMessage({ ...p, short_description: p.short_description || p.descricao });
+      openWhatsApp(message);
+    });
+
     document.getElementById('review-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const payload = { product_id: p.id, name: document.getElementById('review-name').value.trim() || null, rating: Number(document.getElementById('review-rating').value), comment: document.getElementById('review-comment').value.trim(), created_at: new Date().toISOString() };
@@ -55,8 +53,9 @@ async function init() {
       e.target.reset();
       renderReviews(p.id);
     });
+
+    if (STORE_CONFIG.WHATSAPP_ONLY_MODE) applyWhatsAppOnlyMode();
     await renderReviews(p.id);
-    updateCartCount();
   } catch (err) { wrap.innerHTML = `<p class="text-muted">${err.message}</p>`; }
 }
 

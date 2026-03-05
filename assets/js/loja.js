@@ -1,24 +1,12 @@
 import { loadProducts, formatBRL, getCategoryList } from './products.js';
-import { addToCart, getCart, saveCart } from './cart.js';
-
-const STORE_WHATSAPP = window.APP_CONFIG?.whatsapp || '5511958882556';
+import { STORE_CONFIG } from './store.js';
+import { applyWhatsAppOnlyMode, buildWhatsAppMessage, openWhatsApp, createWhatsAppCTA } from './whatsapp-mode.js';
 
 function isService(p) { return p.tipo === 'servico'; }
-
-function buyNow(product) {
-  saveCart([{ id: product.id, nome: product.nome, preco: Number(product.preco || 0), imagem: product.imagem, quantity: 1 }]);
-  window.location.href = 'checkout.html?from=buy-now';
-}
 
 function getParams() {
   const params = new URLSearchParams(window.location.search);
   return { q: (params.get('q') || '').trim().toLowerCase(), category: (params.get('categoria') || '').trim() };
-}
-
-function updateCartCount() {
-  const countEl = document.getElementById('cart-count');
-  if (!countEl) return;
-  countEl.textContent = String(getCart().reduce((acc, item) => acc + Number(item.quantity), 0));
 }
 
 function renderFilters(products) {
@@ -26,6 +14,21 @@ function renderFilters(products) {
   const categories = getCategoryList(products); const current = getParams().category; wrap.innerHTML = '';
   const allBtn = document.createElement('a'); allBtn.href = 'loja.html'; allBtn.className = `filter-chip ${!current ? 'active' : ''}`; allBtn.textContent = 'Todos'; wrap.appendChild(allBtn);
   categories.forEach((cat) => { const a = document.createElement('a'); a.href = `loja.html?categoria=${encodeURIComponent(cat)}`; a.className = `filter-chip ${current === cat ? 'active' : ''}`; a.textContent = cat; wrap.appendChild(a); });
+}
+
+function bindWhatsAppButtons(products) {
+  document.querySelectorAll('.js-whatsapp-item').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const product = products.find((p) => p.id === btn.dataset.itemId);
+      if (!product) return;
+      const message = buildWhatsAppMessage({
+        ...product,
+        short_description: product.short_description || product.descricao,
+        url: `${window.location.origin}/produto.html?id=${encodeURIComponent(product.id)}`
+      });
+      openWhatsApp(message);
+    });
+  });
 }
 
 function renderProducts(products) {
@@ -36,7 +39,7 @@ function renderProducts(products) {
   if (!filtered.length) return (grid.innerHTML = '<p class="text-muted">Nenhum produto encontrado para esse filtro.</p>');
 
   grid.innerHTML = filtered.map((p) => `
-    <article class="shop-card">
+    <article class="shop-card" data-item-id="${p.id}">
       <img src="${p.imagem}" alt="${p.nome}" loading="lazy">
       <div class="shop-body">
         <span class="shop-cat">${p.categoria}</span>${p.badge ? `<span class="shop-badge">${p.badge}</span>` : ''}
@@ -44,15 +47,21 @@ function renderProducts(products) {
         <strong>${isService(p) ? 'Sob consulta' : formatBRL(p.preco)}</strong>
         <div class="shop-actions">
           <a class="btn btn-outline" href="produto.html?id=${encodeURIComponent(p.id)}">Ver detalhes</a>
-          ${isService(p)
-            ? `<a class="btn btn-glass" target="_blank" rel="noopener" href="https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent('Olá! Quero informações sobre o serviço: ' + p.nome)}">Solicitar serviço</a>`
-            : `<button class="btn btn-glass" data-buy="${p.id}">Comprar</button><button class="btn btn-primary" data-add="${p.id}">Adicionar ao carrinho</button>`}
+          ${createWhatsAppCTA(p, isService(p) ? 'Quero esse serviço' : 'Quero esse item')}
         </div>
       </div>
     </article>`).join('');
 
-  grid.querySelectorAll('[data-add]').forEach((btn) => btn.addEventListener('click', () => { const product = products.find((p) => p.id === btn.dataset.add); if (!product) return; addToCart(product, 1); updateCartCount(); alert('Produto adicionado ao carrinho.'); }));
-  grid.querySelectorAll('[data-buy]').forEach((btn) => btn.addEventListener('click', () => { const product = products.find((p) => p.id === btn.dataset.buy); if (product) buyNow(product); }));
+  bindWhatsAppButtons(products);
 }
 
-(async function init() { try { const products = await loadProducts(); renderFilters(products); renderProducts(products); updateCartCount(); } catch (err) { const grid = document.getElementById('product-grid'); if (grid) grid.innerHTML = `<p class="text-muted">${err.message}</p>`; } })();
+(async function init() {
+  try {
+    const products = await loadProducts();
+    renderFilters(products);
+    renderProducts(products);
+    if (STORE_CONFIG.WHATSAPP_ONLY_MODE) applyWhatsAppOnlyMode();
+  } catch (err) {
+    const grid = document.getElementById('product-grid'); if (grid) grid.innerHTML = `<p class="text-muted">${err.message}</p>`;
+  }
+})();
