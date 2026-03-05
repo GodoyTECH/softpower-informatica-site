@@ -33,20 +33,19 @@ function hidePageLinks() {
   const hideLoja = !!window.APP_CONFIG.HIDE_LOJA_PAGE;
   const hideCarrinho = !!window.APP_CONFIG.HIDE_CARRINHO_PAGE;
 
+  const hideEl = (el) => {
+    el.setAttribute('aria-hidden', 'true');
+    el.setAttribute('tabindex', '-1');
+    el.classList.add('is-whatsapp-only-hidden');
+    if ('disabled' in el) el.disabled = true;
+  };
+
   if (hideLoja) {
-    document.querySelectorAll('a[href*="loja"]').forEach((el) => {
-      el.setAttribute('aria-hidden', 'true');
-      el.setAttribute('tabindex', '-1');
-      el.classList.add('is-whatsapp-only-hidden');
-    });
+    document.querySelectorAll('a[href*="loja"], button[onclick*="loja"], [data-target*="loja"]').forEach(hideEl);
   }
 
   if (hideCarrinho) {
-    document.querySelectorAll('a[href*="carrinho"]').forEach((el) => {
-      el.setAttribute('aria-hidden', 'true');
-      el.setAttribute('tabindex', '-1');
-      el.classList.add('is-whatsapp-only-hidden');
-    });
+    document.querySelectorAll('a[href*="carrinho"], #add-cart-product, [data-add-cart], #go-checkout, #clear-cart, button[onclick*="carrinho"], [data-target*="carrinho"]').forEach(hideEl);
   }
 }
 
