@@ -1,6 +1,6 @@
 import { loadProducts, formatBRL, getCategoryList } from './products.js';
 import { STORE_CONFIG } from './store.js';
-import { applyWhatsAppOnlyMode, openWhatsApp, createWhatsAppCTA, addItemToWhatsAppCart, buildWhatsAppCartMessage } from './whatsapp-mode.js';
+import { applyWhatsAppOnlyMode, openWhatsApp, createWhatsAppCTA, addItemToWhatsAppCart, buildWhatsAppCartMessage, clearWhatsAppCart, getWhatsAppCartCount } from './whatsapp-mode.js';
 
 function isService(p) { return p.tipo === 'servico'; }
 
@@ -26,9 +26,26 @@ function bindWhatsAppButtons(products) {
         short_description: product.short_description || product.descricao,
         url: `${window.location.origin}/produto.html?id=${encodeURIComponent(product.id)}`
       });
+      updateSelectionUi();
       openWhatsApp(buildWhatsAppCartMessage(cart));
     });
   });
+}
+
+function updateSelectionUi() {
+  const count = getWhatsAppCartCount();
+  const el = document.getElementById('wa-selected-count');
+  if (el) el.textContent = `${count} selecionado(s)`;
+}
+
+function bindSelectionControls() {
+  const clearBtn = document.getElementById('wa-clear-selection');
+  clearBtn?.addEventListener('click', () => {
+    clearWhatsAppCart();
+    updateSelectionUi();
+    alert('Seleção de itens limpa.');
+  });
+  updateSelectionUi();
 }
 
 function renderProducts(products) {
@@ -60,6 +77,7 @@ function renderProducts(products) {
     const products = await loadProducts();
     renderFilters(products);
     renderProducts(products);
+    bindSelectionControls();
     if (STORE_CONFIG.WHATSAPP_ONLY_MODE) applyWhatsAppOnlyMode();
   } catch (err) {
     const grid = document.getElementById('product-grid'); if (grid) grid.innerHTML = `<p class="text-muted">${err.message}</p>`;

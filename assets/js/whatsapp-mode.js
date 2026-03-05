@@ -31,6 +31,10 @@ export function clearWhatsAppCart() {
   localStorage.removeItem(WA_CART_KEY);
 }
 
+export function getWhatsAppCartCount() {
+  return getWhatsAppCart().reduce((acc, item) => acc + Number(item.quantity || 0), 0);
+}
+
 export function addItemToWhatsAppCart(item) {
   const cart = getWhatsAppCart();
   const found = cart.find((c) => c.id === item.id);

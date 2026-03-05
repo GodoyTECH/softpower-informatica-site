@@ -1,6 +1,6 @@
 import { loadProducts, formatBRL, getProductById } from './products.js';
 import { STORE_CONFIG } from './store.js';
-import { applyWhatsAppOnlyMode, openWhatsApp, createWhatsAppCTA, addItemToWhatsAppCart, buildWhatsAppCartMessage } from './whatsapp-mode.js';
+import { applyWhatsAppOnlyMode, openWhatsApp, createWhatsAppCTA, addItemToWhatsAppCart, buildWhatsAppCartMessage, clearWhatsAppCart, getWhatsAppCartCount } from './whatsapp-mode.js';
 
 const CONFIG = window.APP_CONFIG || {};
 const GOOGLE_REVIEW_URL = CONFIG.googleReviewUrl || '';
@@ -37,12 +37,26 @@ async function init() {
     const products = await loadProducts(); const p = getProductById(products, id);
     if (!p) return (wrap.innerHTML = '<p class="text-muted">Produto não encontrado.</p>');
 
-    wrap.innerHTML = `<div class="product-layout" data-item-id="${p.id}"><img src="${p.imagem}" alt="${p.nome}"><div><span class="shop-cat">${p.categoria}</span>${p.badge ? `<span class="shop-badge">${p.badge}</span>` : ''}<h1>${p.nome}</h1><p>${p.descricao}</p><p><strong>Estoque:</strong> ${p.estoque}</p><h2>${isService(p) ? 'Sob consulta' : formatBRL(p.preco)}</h2><div class="shop-actions" style="margin-top:16px;">${createWhatsAppCTA(p, isService(p) ? 'Quero esse serviço' : 'Quero esse item')}${GOOGLE_REVIEW_URL ? `<a class="btn btn-outline" target="_blank" rel="noopener" href="${GOOGLE_REVIEW_URL}">Avaliar no Google</a>` : ''}</div><div class="review-box"><h3>Avaliações</h3><p id="reviews-summary" class="text-muted"></p><form id="review-form"><input id="review-name" placeholder="Seu nome (opcional)"><select id="review-rating" required><option value="">Nota</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select><textarea id="review-comment" placeholder="Comentário" required></textarea><button class="btn btn-primary" type="submit">Enviar avaliação</button></form><div id="reviews-list"></div></div></div></div>`;
+    wrap.innerHTML = `<div class="product-layout" data-item-id="${p.id}"><img src="${p.imagem}" alt="${p.nome}"><div><span class="shop-cat">${p.categoria}</span>${p.badge ? `<span class="shop-badge">${p.badge}</span>` : ''}<h1>${p.nome}</h1><p>${p.descricao}</p><p><strong>Estoque:</strong> ${p.estoque}</p><h2>${isService(p) ? 'Sob consulta' : formatBRL(p.preco)}</h2><div class="shop-actions" style="margin-top:16px;">${createWhatsAppCTA(p, isService(p) ? 'Quero esse serviço' : 'Quero esse item')}<button id="wa-clear-selection-product" class="btn btn-outline" type="button">Limpar seleção</button><span id="wa-selected-count-product" class="text-muted"></span>${GOOGLE_REVIEW_URL ? `<a class="btn btn-outline" target="_blank" rel="noopener" href="${GOOGLE_REVIEW_URL}">Avaliar no Google</a>` : ''}</div><div class="review-box"><h3>Avaliações</h3><p id="reviews-summary" class="text-muted"></p><form id="review-form"><input id="review-name" placeholder="Seu nome (opcional)"><select id="review-rating" required><option value="">Nota</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select><textarea id="review-comment" placeholder="Comentário" required></textarea><button class="btn btn-primary" type="submit">Enviar avaliação</button></form><div id="reviews-list"></div></div></div></div>`;
+
+    const refreshCount = () => {
+      const el = document.getElementById('wa-selected-count-product');
+      if (el) el.textContent = `${getWhatsAppCartCount()} selecionado(s)`;
+    };
 
     document.querySelector('.js-whatsapp-item')?.addEventListener('click', () => {
       const cart = addItemToWhatsAppCart({ ...p, short_description: p.short_description || p.descricao });
+      refreshCount();
       openWhatsApp(buildWhatsAppCartMessage(cart));
     });
+
+    document.getElementById('wa-clear-selection-product')?.addEventListener('click', () => {
+      clearWhatsAppCart();
+      refreshCount();
+      alert('Seleção de itens limpa.');
+    });
+
+    refreshCount();
 
     document.getElementById('review-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
