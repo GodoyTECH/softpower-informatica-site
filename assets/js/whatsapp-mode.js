@@ -16,9 +16,56 @@ export function buildWhatsAppMessage(item = {}) {
   ].join('\n');
 }
 
+const WA_CART_KEY = 'softpower_whatsapp_cart_v1';
+
 export function openWhatsApp(message) {
   const link = `https://wa.me/${STORE_CONFIG.STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.open(link, '_blank', 'noopener');
+}
+
+export function getWhatsAppCart() {
+  try { return JSON.parse(localStorage.getItem(WA_CART_KEY) || '[]'); } catch { return []; }
+}
+
+export function clearWhatsAppCart() {
+  localStorage.removeItem(WA_CART_KEY);
+}
+
+export function addItemToWhatsAppCart(item) {
+  const cart = getWhatsAppCart();
+  const found = cart.find((c) => c.id === item.id);
+  if (found) found.quantity += 1;
+  else cart.push({
+    id: item.id,
+    nome: item.nome,
+    preco: item.preco,
+    descricao: item.short_description || item.descricao || '-',
+    url: item.url || window.location.href,
+    quantity: 1
+  });
+  localStorage.setItem(WA_CART_KEY, JSON.stringify(cart));
+  return cart;
+}
+
+export function buildWhatsAppCartMessage(cart = []) {
+  const lines = [
+    'Olá! Vim pelo site da Soft Power Informática.',
+    'Tenho interesse nestes itens:',
+    ''
+  ];
+
+  cart.forEach((item, idx) => {
+    lines.push(`${idx + 1}) ${item.nome}`);
+    lines.push(`• Qtd: ${item.quantity}`);
+    lines.push(`• Preço: ${item.preco != null ? formatPriceBRL(item.preco) : 'Sob consulta'}`);
+    lines.push(`• Detalhes: ${item.descricao || '-'}`);
+    lines.push(`• ID: ${item.id || '-'}`);
+    lines.push(`• Link: ${item.url || '-'}`);
+    lines.push('');
+  });
+
+  lines.push('Pode me passar disponibilidade e formas de pagamento?');
+  return lines.join('\n');
 }
 
 export function createWhatsAppCTA(item, label) {

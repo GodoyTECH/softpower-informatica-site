@@ -1,6 +1,6 @@
 import { loadProducts, formatBRL, getCategoryList } from './products.js';
 import { STORE_CONFIG } from './store.js';
-import { applyWhatsAppOnlyMode, buildWhatsAppMessage, openWhatsApp, createWhatsAppCTA } from './whatsapp-mode.js';
+import { applyWhatsAppOnlyMode, openWhatsApp, createWhatsAppCTA, addItemToWhatsAppCart, buildWhatsAppCartMessage } from './whatsapp-mode.js';
 
 function isService(p) { return p.tipo === 'servico'; }
 
@@ -21,12 +21,12 @@ function bindWhatsAppButtons(products) {
     btn.addEventListener('click', () => {
       const product = products.find((p) => p.id === btn.dataset.itemId);
       if (!product) return;
-      const message = buildWhatsAppMessage({
+      const cart = addItemToWhatsAppCart({
         ...product,
         short_description: product.short_description || product.descricao,
         url: `${window.location.origin}/produto.html?id=${encodeURIComponent(product.id)}`
       });
-      openWhatsApp(message);
+      openWhatsApp(buildWhatsAppCartMessage(cart));
     });
   });
 }
