@@ -1,0 +1,26 @@
+[
+  {
+    "id": "promo-ssd-sata",
+    "item_id": "ssd-sata-480gb",
+    "headline": "SSD em oferta",
+    "subtext": "Upgrade rápido com excelente custo-benefício.",
+    "sort_order": 1,
+    "is_active": true
+  },
+  {
+    "id": "promo-formatacao",
+    "item_id": "formatacao-premium",
+    "headline": "Formatação Premium",
+    "subtext": "Seu sistema limpo, otimizado e pronto para produzir.",
+    "sort_order": 2,
+    "is_active": true
+  },
+  {
+    "id": "promo-notebook",
+    "item_id": "notebook-lenovo-i5-8gb-256ssd",
+    "headline": "Notebook para estudo e trabalho",
+    "subtext": "Desempenho e custo-benefício para o dia a dia.",
+    "sort_order": 3,
+    "is_active": true
+  }
+]
