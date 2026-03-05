@@ -2,36 +2,37 @@ import { getCart, getCartTotals, clearCart } from './cart.js';
 import { formatBRL } from './products.js';
 import { createCheckoutSession, redirectToPayment } from './payments.js';
 import { STORE_CONFIG } from './store.js';
-import { renderWhatsappOnlyNotice } from './whatsapp-mode.js';
 
 const STORE_WHATSAPP = window.APP_CONFIG?.whatsapp || STORE_CONFIG.STORE_WHATSAPP_NUMBER;
 
-if (STORE_CONFIG.WHATSAPP_ONLY_MODE) {
-  renderWhatsappOnlyNotice(document.querySelector('main, .container, body'));
-} else {
-  function buildOrderMessage(cart, customer) {
+function buildOrderMessage(cart, customer) {
     const lines = [
-      'Olá! Vim pelo site da Soft Power Informática e quero finalizar meu pedido.',
-      '',
-      '🛒 Itens:'
+      'Olá! Vim pelo site da Soft Power Informática.',
+      'Tenho interesse nestes itens:',
+      ''
     ];
 
     cart.forEach((item, i) => {
-      lines.push(`${i + 1}. ${item.nome} | Qtd: ${item.quantity} | Unit: ${formatBRL(item.preco)} | Total: ${formatBRL(item.preco * item.quantity)}`);
+      lines.push(`${i + 1}) ${item.nome}`);
+      lines.push(`• Qtd: ${item.quantity}`);
+      lines.push(`• Preço: ${formatBRL(item.preco)}`);
+      lines.push(`• Detalhes: ${item.descricao || '-'}`);
+      lines.push(`• ID: ${item.id || '-'}`);
+      lines.push(`• Link: ${item.url || '-'}`);
+      lines.push('');
     });
 
     const totals = getCartTotals(cart);
+    lines.push(`Total estimado dos itens: ${formatBRL(totals.total)}`);
     lines.push('');
-    lines.push(`💳 Total do pedido: ${formatBRL(totals.total)}`);
+    lines.push('Dados para contato:');
+    lines.push(`• Nome: ${customer.nome}`);
+    lines.push(`• WhatsApp: ${customer.whatsapp}`);
+    lines.push(`• Entrega/Retirada: ${customer.entrega}`);
+    if (customer.entrega === 'entrega') lines.push(`• Endereço: ${customer.endereco}`);
+    if (customer.observacoes) lines.push(`• Observações: ${customer.observacoes}`);
     lines.push('');
-    lines.push('👤 Dados do cliente:');
-    lines.push(`Nome: ${customer.nome}`);
-    lines.push(`WhatsApp: ${customer.whatsapp}`);
-    lines.push(`Entrega/Retirada: ${customer.entrega}`);
-    if (customer.entrega === 'entrega') lines.push(`Endereço: ${customer.endereco}`);
-    if (customer.observacoes) lines.push(`Observações: ${customer.observacoes}`);
-    lines.push('');
-    lines.push('Obrigado!');
+    lines.push('Pode me passar disponibilidade e formas de pagamento?');
 
     return lines.join('\n');
   }
@@ -108,5 +109,4 @@ if (STORE_CONFIG.WHATSAPP_ONLY_MODE) {
     renderOrderSummary();
   });
 
-  renderOrderSummary();
-}
+renderOrderSummary();

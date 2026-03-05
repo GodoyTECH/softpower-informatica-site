@@ -1,4 +1,5 @@
 import { loadProducts, formatBRL, getCategoryList } from './products.js';
+import { addToCart, getCart } from './cart.js';
 import { STORE_CONFIG } from './store.js';
 import { applyWhatsAppOnlyMode, openWhatsApp, createWhatsAppCTA, addItemToWhatsAppCart, buildWhatsAppCartMessage, clearWhatsAppCart, getWhatsAppCartCount } from './whatsapp-mode.js';
 
@@ -16,6 +17,12 @@ function renderFilters(products) {
   categories.forEach((cat) => { const a = document.createElement('a'); a.href = `loja.html?categoria=${encodeURIComponent(cat)}`; a.className = `filter-chip ${current === cat ? 'active' : ''}`; a.textContent = cat; wrap.appendChild(a); });
 }
 
+function updateCartCount() {
+  const countEl = document.getElementById('cart-count');
+  if (!countEl) return;
+  countEl.textContent = String(getCart().reduce((acc, item) => acc + Number(item.quantity), 0));
+}
+
 function bindWhatsAppButtons(products) {
   document.querySelectorAll('.js-whatsapp-item').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -28,6 +35,16 @@ function bindWhatsAppButtons(products) {
       });
       updateSelectionUi();
       openWhatsApp(buildWhatsAppCartMessage(cart));
+    });
+  });
+
+  document.querySelectorAll('[data-add-cart]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const product = products.find((p) => p.id === btn.dataset.addCart);
+      if (!product) return;
+      addToCart({ ...product, url: `${window.location.origin}/produto.html?id=${encodeURIComponent(product.id)}` }, 1);
+      updateCartCount();
+      alert('Item adicionado ao carrinho.');
     });
   });
 }
@@ -65,6 +82,7 @@ function renderProducts(products) {
         <div class="shop-actions">
           <a class="btn btn-outline" href="produto.html?id=${encodeURIComponent(p.id)}">Ver detalhes</a>
           ${createWhatsAppCTA(p, isService(p) ? 'Quero esse serviço' : 'Quero esse item')}
+          <button class="btn btn-outline" data-add-cart="${p.id}">Adicionar ao carrinho</button>
         </div>
       </div>
     </article>`).join('');
@@ -78,6 +96,7 @@ function renderProducts(products) {
     renderFilters(products);
     renderProducts(products);
     bindSelectionControls();
+    updateCartCount();
     if (STORE_CONFIG.WHATSAPP_ONLY_MODE) applyWhatsAppOnlyMode();
   } catch (err) {
     const grid = document.getElementById('product-grid'); if (grid) grid.innerHTML = `<p class="text-muted">${err.message}</p>`;

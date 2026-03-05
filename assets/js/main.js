@@ -29,7 +29,7 @@ function openWhatsApp(message) {
 
 function applyWhatsAppOnlyMode() {
   if (!window.APP_CONFIG.WHATSAPP_ONLY_MODE) return;
-  document.querySelectorAll('a[href*="carrinho.html"],a[href*="checkout.html"],#go-checkout,#pay-online,[data-add],[data-buy],#add-to-cart,#buy-now').forEach((el) => {
+  document.querySelectorAll('#pay-online,[data-buy],#buy-now').forEach((el) => {
     el.setAttribute('aria-hidden', 'true');
     el.setAttribute('tabindex', '-1');
     el.classList.add('is-whatsapp-only-hidden');

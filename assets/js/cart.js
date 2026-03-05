@@ -25,6 +25,8 @@ export function addToCart(product, quantity = 1) {
       nome: product.nome,
       preco: Number(product.preco || 0),
       imagem: product.imagem,
+      descricao: product.short_description || product.descricao || '-',
+      url: product.url || `${window.location.origin}/produto.html?id=${encodeURIComponent(product.id)}`,
       quantity
     });
   }

@@ -1,12 +1,7 @@
 import { getCart, updateItemQuantity, removeFromCart, getCartTotals } from './cart.js';
 import { formatBRL } from './products.js';
-import { STORE_CONFIG } from './store.js';
-import { renderWhatsappOnlyNotice } from './whatsapp-mode.js';
 
-if (STORE_CONFIG.WHATSAPP_ONLY_MODE) {
-  renderWhatsappOnlyNotice(document.querySelector('main, .container, body'));
-} else {
-  function render() {
+function render() {
     const cart = getCart();
     const tbody = document.getElementById('cart-rows');
     const summary = document.getElementById('cart-summary');
@@ -50,5 +45,4 @@ if (STORE_CONFIG.WHATSAPP_ONLY_MODE) {
     window.location.href = 'checkout.html';
   });
 
-  render();
-}
+render();
