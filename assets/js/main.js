@@ -34,7 +34,7 @@ function hidePageLinks() {
   const hideCarrinho = !!window.APP_CONFIG.HIDE_CARRINHO_PAGE;
 
   if (hideLoja) {
-    document.querySelectorAll('a[href*="loja.html"]').forEach((el) => {
+    document.querySelectorAll('a[href*="loja"]').forEach((el) => {
       el.setAttribute('aria-hidden', 'true');
       el.setAttribute('tabindex', '-1');
       el.classList.add('is-whatsapp-only-hidden');
@@ -42,7 +42,7 @@ function hidePageLinks() {
   }
 
   if (hideCarrinho) {
-    document.querySelectorAll('a[href*="carrinho.html"]').forEach((el) => {
+    document.querySelectorAll('a[href*="carrinho"]').forEach((el) => {
       el.setAttribute('aria-hidden', 'true');
       el.setAttribute('tabindex', '-1');
       el.classList.add('is-whatsapp-only-hidden');
