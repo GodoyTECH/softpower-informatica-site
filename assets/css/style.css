@@ -431,8 +431,8 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 
 .differential-content h3 {
   margin-bottom: 10px;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .differential-content p {
