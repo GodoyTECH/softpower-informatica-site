@@ -1,25 +1,25 @@
 [
   {
     "id": "notebook-lenovo-i5-8gb-256ssd",
-    "nome": "Notebook Lenovo i5 8GB 256GB SSD",
+    "nome": "Notebooks para Estudo e Trabalho",
     "categoria": "Notebook/PC",
     "preco": 2599.9,
-    "descricao": "Notebook para estudo e trabalho com ótimo custo-benefício.",
+    "descricao": "Temos notebooks de diversas marcas, configurações e preços para estudo, trabalho e uso diário, sempre com garantia e suporte especializado.",
     "destaque": true,
     "badge": "Mais vendido",
-    "imagem": "assets/products/produto_notebook-lenovo-i5-8gb-256ssd.svg",
+    "imagem": "imagem_1_notebooks.png",
     "estoque": 7,
     "tipo": "produto"
   },
   {
     "id": "pc-office-i3-16gb-ssd480",
-    "nome": "PC Office i3 16GB + SSD 480GB",
+    "nome": "PC Gamer e Desempenho",
     "categoria": "Notebook/PC",
     "preco": 2190,
-    "descricao": "Desktop completo para escritório, home office e estudos.",
+    "descricao": "PC com excelente desempenho para games leves, estudo e produtividade, com possibilidade de upgrade conforme sua necessidade.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "assets/products/produto_pc-office-i3-16gb-ssd480.svg",
+    "imagem": "imagem_3_pc_gamer.png",
     "estoque": 4,
     "tipo": "produto"
   },
@@ -121,13 +121,13 @@
   },
   {
     "id": "suporte-notebook-ajustavel",
-    "nome": "Suporte Ajustável para Notebook",
+    "nome": "Suporte Técnico, Formatação e Soluções",
     "categoria": "Acessórios",
     "preco": 69.9,
-    "descricao": "Ergonomia e ventilação para uso prolongado.",
+    "descricao": "Assistência técnica completa, formatação profissional e soluções sob medida para manter seus equipamentos rápidos, estáveis e seguros.",
     "destaque": false,
     "badge": "Novo",
-    "imagem": "assets/products/produto_suporte-notebook-ajustavel.svg",
+    "imagem": "imagem_2_suporte.png",
     "estoque": 25,
     "tipo": "produto"
   },
