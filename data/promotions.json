@@ -1,25 +1,25 @@
 [
   {
-    "id": "promo-notebook",
-    "item_id": "notebook-lenovo-i5-8gb-256ssd",
-    "headline": "Notebooks em destaque",
-    "subtext": "Modelos para estudo e trabalho, com desempenho consistente e condições especiais.",
+    "id": "promo-formatacao",
+    "item_id": "formatacao-premium",
+    "headline": "Serviço em destaque",
+    "subtext": "Formatação — R$ 180,00",
     "sort_order": 1,
     "is_active": true
   },
   {
-    "id": "promo-ssd-sata",
-    "item_id": "suporte-notebook-ajustavel",
-    "headline": "Suporte técnico premium",
-    "subtext": "Formatação, manutenção e soluções rápidas para o seu dia a dia.",
+    "id": "promo-pcgamer",
+    "item_id": "pc-office-i3-16gb-ssd480",
+    "headline": "PC Gamer",
+    "subtext": "Manutenção e montagem de PC Gamer — a partir de R$ 250,00",
     "sort_order": 2,
     "is_active": true
   },
   {
-    "id": "promo-formatacao",
-    "item_id": "pc-office-i3-16gb-ssd480",
-    "headline": "PC gamer e desempenho",
-    "subtext": "Potência para games leves, estudos e tarefas profissionais com fluidez.",
+    "id": "promo-seminovos",
+    "item_id": "notebook-lenovo-i5-8gb-256ssd",
+    "headline": "Seminovos revisados",
+    "subtext": "Venda de notebooks e computadores seminovos e revisados com 6 meses de garantia",
     "sort_order": 3,
     "is_active": true
   }
