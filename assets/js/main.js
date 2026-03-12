@@ -121,6 +121,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (text) link.href = `https://wa.me/${STORE_WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
   });
 
+
+  const faqButtons = document.querySelectorAll('.faq-question');
+  faqButtons.forEach((button, index) => {
+    const item = button.closest('.faq-item');
+    const answer = item?.querySelector('.faq-answer');
+    if (!item || !answer) return;
+
+    const answerId = answer.id || `faq-answer-${index + 1}`;
+    answer.id = answerId;
+    button.setAttribute('aria-controls', answerId);
+    button.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
+
+    button.addEventListener('click', () => {
+      const isOpen = item.classList.contains('active');
+      item.classList.toggle('active', !isOpen);
+      button.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
   const budgetForm = document.getElementById('budget-form');
   const normalizeLabel = (v) => (!v ? '-' : String(v).replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()));
   const buildMsg = (d, compact = false) => compact
