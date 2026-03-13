@@ -1104,7 +1104,6 @@ body > * {
   justify-content: center;
   margin-bottom: 20px;
 }
-======
 .hero-buttons,
 .hero-stats {
   justify-content: center;
@@ -1261,7 +1260,7 @@ h1, h2, h3, h4,
 .map-container,
 .form-input,
 .form-select,
-.form-textarea {======
+.form-textarea {
   background: rgba(231, 234, 238, 0.82);
   border-color: rgba(154, 164, 176, 0.5);
 }
@@ -1369,5 +1368,73 @@ section[style*="var(--bg-card)"] {
   .form-textarea {
     background: rgba(25, 31, 38, 0.56) !important;
     backdrop-filter: blur(4px);
+  }
+}
+
+/* ===== HOTFIX MOBILE: fundo, logo navbar e menu sanduíche ===== */
+.header .logo,
+.header .logo img,
+.header .logo-image {
+  display: block;
+  width: auto;
+  height: clamp(52px, 5.2vw, 64px);
+  max-height: 64px;
+  object-fit: contain;
+}
+
+.header-inner {
+  padding-inline: clamp(14px, 3vw, 24px);
+}
+
+@media (max-width: 768px) {
+  body {
+    background-size: cover, cover, 100% auto;
+    background-position: center top, center top, center 0%;
+    background-attachment: scroll, scroll, scroll;
+  }
+
+  body::after {
+    display: none;
+  }
+
+  .header {
+    padding-top: 8px;
+  }
+
+  .header .logo,
+  .header .logo img,
+  .header .logo-image {
+    height: clamp(56px, 16vw, 64px);
+    max-height: 64px;
+  }
+
+  .menu-toggle {
+    padding: 12px;
+  }
+
+  .menu-toggle span {
+    height: 3px;
+    width: 26px;
+    border-radius: 3px;
+    background: var(--primary);
+    box-shadow: 0 1px 6px rgba(255, 107, 0, 0.35);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    background-size: cover, cover, 120% auto;
+    background-position: center top, center top, center 4%;
+  }
+
+  .header-inner {
+    padding-inline: 12px;
+  }
+
+  .header .logo,
+  .header .logo img,
+  .header .logo-image {
+    height: clamp(52px, 18vw, 60px);
+    max-height: 60px;
   }
 }
