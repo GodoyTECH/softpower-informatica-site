@@ -969,7 +969,11 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 body {
   background-color: var(--bg);
   background-image:
+
     linear-gradient(160deg, rgba(246, 250, 247, 0.16), rgba(236, 243, 240, 0.10)),
+
+    linear-gradient(160deg, rgba(246, 250, 247, 0.28), rgba(236, 243, 240, 0.20)),
+
     url('../img/fundo.png');
   background-size: cover, cover;
   background-position: center, center;
@@ -985,7 +989,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.14;
+  opacity: 0.20;
   background:
     radial-gradient(circle at 12% 16%, rgba(255, 107, 0, 0.18), transparent 30%),
     radial-gradient(circle at 86% 14%, rgba(255, 107, 0, 0.12), transparent 26%),
@@ -999,9 +1003,11 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.05;
+
+  opacity: 0.10;
   background: url('../img/fundo.png') center / cover no-repeat;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: multiply;
+
 }
 
 body > * {
@@ -1101,7 +1107,7 @@ body > * {
   justify-content: center;
   margin-bottom: 20px;
 }
-
+======
 .hero-buttons,
 .hero-stats {
   justify-content: center;
@@ -1250,7 +1256,7 @@ h1, h2, h3, h4,
 .map-container,
 .form-input,
 .form-select,
-.form-textarea {
+.form-textarea {======
   background: rgba(231, 234, 238, 0.82);
   border-color: rgba(154, 164, 176, 0.5);
 }
@@ -1280,7 +1286,6 @@ h1, h2, h3, h4,
     color: var(--primary);
   }
 }
-
 /* ===== AJUSTE FINAL: CONTAINERS ESCUROS TRANSLÚCIDOS + REMOVER PELÍCULA BRANCA ===== */
 .section,
 .page-header,
@@ -1329,7 +1334,6 @@ section[style*="var(--bg-card)"] {
 .hero-subtitle {
   color: rgba(232, 238, 245, 0.86) !important;
 }
-
 
 .card h2,
 .card h3,
