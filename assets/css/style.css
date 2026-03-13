@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
-/* ============================================
+/* ====
    SOFT POWER INFORMÁTICA - Premium Theme
-   ============================================ */
+   ==== */
 
-/* ===== VARIÁVEIS ===== */
+/*  VARIÁVEIS  */
 :root {
   --primary: #FF6B00;
   --primary-light: #ff8c3a;
@@ -27,7 +27,7 @@
   --header-height: 70px;
 }
 
-/* ===== RESET ===== */
+/*  RESET  */
 * {
   margin: 0;
   padding: 0;
@@ -65,7 +65,7 @@ img {
   height: auto;
 }
 
-/* ===== TIPOGRAFIA ===== */
+/*  TIPOGRAFIA  */
 h1, h2, h3, h4 {
   font-family: 'Michroma', 'Orbitron', sans-serif;
   font-weight: 700;
@@ -80,7 +80,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 .text-center { text-align: center; }
 .text-muted { color: var(--text-muted); }
 
-/* ===== LAYOUT ===== */
+/*  LAYOUT  */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -107,7 +107,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   margin: 0 auto;
 }
 
-/* ===== HEADER ===== */
+/*  HEADER  */
 .header {
   position: fixed;
   top: 0;
@@ -183,7 +183,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   color: var(--primary);
 }
 
-/* ===== MOBILE MENU ===== */
+/*  MOBILE MENU  */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -228,7 +228,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   }
 }
 
-/* ===== BOTÕES ===== */
+/*  BOTÕES  */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -275,7 +275,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   transform: translateY(-2px);
 }
 
-/* ===== HERO ===== */
+/*  HERO  */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -347,7 +347,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   font-size: 0.9rem;
 }
 
-/* ===== CARDS ===== */
+/*  CARDS  */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -370,7 +370,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   box-shadow: var(--shadow-hover);
 }
 
-/* ===== SERVIÇOS ===== */
+/*  SERVIÇOS  */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -403,7 +403,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   font-size: 0.95rem;
 }
 
-/* ===== DIFERENCIAIS ===== */
+/*  DIFERENCIAIS  */
 .differentials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -446,7 +446,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   word-break: break-word;
 }
 
-/* ===== ANÚNCIOS ===== */
+/*  ANÚNCIOS  */
 .filters {
   display: flex;
   justify-content: center;
@@ -549,7 +549,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   margin-left: 10px;
 }
 
-/* ===== DEPOIMENTOS ===== */
+/*  DEPOIMENTOS  */
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -580,7 +580,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 }
 
 .testimonial-avatar {
-  width: 50px;/* ===== HOTFIX MOBILE: fundo, logo navbar e menu sanduíche ===== */
+  width: 50px;/*  HOTFIX MOBILE: fundo, logo navbar e menu sanduíche  */
 .header .logo,
 .header .logo img,
 .header .logo-image {
@@ -643,7 +643,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   color: var(--text-muted);
 }
 
-/* ===== LOCALIZAÇÃO ===== */
+/*  LOCALIZAÇÃO  */
 .location-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -679,7 +679,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   background: rgba(255, 107, 0, 0.1);
   border-radius: var(--radius-sm);
   display: flex;
-  align-items: center;
+  align-items: center;======
   justify-content: center;
   color: var(--primary);
   font-size: 1.2rem;
@@ -697,7 +697,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   border: none;
 }
 
-/* ===== ORÇAMENTO ===== */
+/*  ORÇAMENTO  */
 .budget-form {
   max-width: 600px;
   margin: 0 auto;
@@ -759,7 +759,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   margin-top: 30px;
 }
 
-/* ===== FAQ ===== */
+/*  FAQ  */
 .faq-list {
   max-width: 800px;
   margin: 0 auto;
@@ -814,7 +814,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   color: var(--text-muted);
 }
 
-/* ===== CONTATO ===== */
+/*  CONTATO  */
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -854,7 +854,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   color: var(--primary);
 }
 
-/* ===== FOOTER ===== */
+/*  FOOTER  */
 .footer {
   background: var(--bg-card);
   border-top: 1px solid var(--border);
@@ -903,7 +903,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   font-size: 0.9rem;
 }
 
-/* ===== WHATSAPP FLOAT ===== */
+/*  WHATSAPP FLOAT  */
 .whatsapp-float {
   position: fixed;
   bottom: 30px;
@@ -927,7 +927,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
 }
 
-/* ===== PAGE HEADER ===== */
+/*  PAGE HEADER  */
 .page-header {
   padding: 150px 0 80px;
   background:
@@ -946,7 +946,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   margin: 0 auto;
 }
 
-/* ===== DEMO NOTICE ===== */
+/*  DEMO NOTICE  */
 .demo-notice {
   background: rgba(255, 193, 7, 0.1);
   border: 1px solid rgba(255, 193, 7, 0.3);
@@ -958,7 +958,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   font-size: 0.9rem;
 }
 
-/* ===== ANIMATIONS ===== */
+/*  ANIMATIONS  */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -973,7 +973,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 .delay-3 { animation-delay: 0.3s; }
 .delay-4 { animation-delay: 0.4s; }
 
-/* ===== RESPONSIVE ===== */
+/*  RESPONSIVE  */
 @media (max-width: 768px) {
   .hero-stats {
     flex-direction: column;
@@ -993,7 +993,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   }
 }
 
-/* ===== AJUSTES FINAIS DE IDENTIDADE ===== */
+/*  AJUSTES FINAIS DE IDENTIDADE  */
 :root {
   --bg: #f3f5f7;
   --text: #161a1d;
@@ -1180,7 +1180,7 @@ body > * {
 #promo-description { color: #bfcbd3; }
 .promo-nav { display: flex; justify-content: space-between; margin-top: 10px; }
 .promo-dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
-.promo-dot { width: 10px; height: 10px; border-radius: 50%; border: 0; background: #b4bcc5; }
+.promo-dot { width: 10px; h======eight: 10px; border-radius: 50%; border: 0; background: #b4bcc5; }
 .promo-dot.active { background: var(--primary); }
 
 .ad-price,
@@ -1269,7 +1269,7 @@ section[style*="var(--bg-card)"] {
   pointer-events: none !important;
 }
 
-/* ===== AJUSTES FINAIS: TEMA CINZA + CONTRASTE + TIPOGRAFIA ===== */
+/*  AJUSTES FINAIS: TEMA CINZA + CONTRASTE + TIPOGRAFIA  */
 :root {
   --logo-font: 'Montserrat', 'Inter', sans-serif;
   --bg-card: #e7eaee;
@@ -1303,7 +1303,7 @@ h1, h2, h3, h4,
 .map-container,
 .form-input,
 .form-select,
-.form-textarea {======
+.form-textarea {=
   background: rgba(231, 234, 238, 0.82);
   border-color: rgba(154, 164, 176, 0.5);
 }
@@ -1333,7 +1333,7 @@ h1, h2, h3, h4,
     color: var(--primary);
   }
 }
-/* ===== AJUSTE FINAL: CONTAINERS ESCUROS TRANSLÚCIDOS + REMOVER PELÍCULA BRANCA ===== */
+/*  AJUSTE FINAL: CONTAINERS ESCUROS TRANSLÚCIDOS + REMOVER PELÍCULA BRANCA  */
 .section,
 .page-header,
 .footer,
@@ -1439,7 +1439,7 @@ section[style*="var(--bg-card)"] {
   width: 100%;
 }
 
-/* ===== TABLET / MOBILE ===== */
+/*  TABLET / MOBILE  */
 @media (max-width: 768px) {
   body {
     /* as 3 camadas precisam preencher a tela */
@@ -1523,7 +1523,7 @@ section[style*="var(--bg-card)"] {
   }
 }
 
-/* ===== CELULARES PEQUENOS ===== */
+/*  CELULARES PEQUENOS  */
 @media (max-width: 480px) {
   body {
     /* mantém o fundo inteiro visível e sem zoom exagerado */
