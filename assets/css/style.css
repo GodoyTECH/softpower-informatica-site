@@ -1371,3 +1371,63 @@ section[style*="var(--bg-card)"] {
     backdrop-filter: blur(4px);
   }
 }
+
+/* ===== HOTFIX MOBILE: fundo, logo navbar e menu sanduíche ===== */
+.header .logo,
+.header .logo img,
+.header .logo-image {
+  display: block;
+  width: auto;
+  height: clamp(52px, 5.2vw, 64px);
+  max-height: 64px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-size: cover, cover, contain;
+    background-position: center top, center top, center top;
+    background-attachment: scroll, scroll, scroll;
+  }
+
+  body::after {
+    display: none;
+  }
+
+  .header {
+    padding-top: 8px;
+  }
+
+  .header .logo,
+  .header .logo img,
+  .header .logo-image {
+    height: clamp(56px, 16vw, 64px);
+    max-height: 64px;
+  }
+
+  .menu-toggle {
+    padding: 12px;
+  }
+
+  .menu-toggle span {
+    height: 3px;
+    width: 26px;
+    border-radius: 3px;
+    background: var(--primary);
+    box-shadow: 0 1px 6px rgba(255, 107, 0, 0.35);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    background-size: cover, cover, contain;
+    background-position: center top, center top, center 12%;
+  }
+
+  .header .logo,
+  .header .logo img,
+  .header .logo-image {
+    height: clamp(52px, 18vw, 60px);
+    max-height: 60px;
+  }
+}
