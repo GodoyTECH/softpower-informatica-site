@@ -967,18 +967,15 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 }
 
 body {
-  background-color: var(--bg);
+  background-color: #04160f;
   background-image:
-
-    linear-gradient(160deg, rgba(246, 250, 247, 0.16), rgba(236, 243, 240, 0.10)),
-
-    linear-gradient(160deg, rgba(246, 250, 247, 0.28), rgba(236, 243, 240, 0.20)),
-
+    linear-gradient(160deg, rgba(4, 22, 15, 0.22), rgba(4, 22, 15, 0.32)),
+    linear-gradient(160deg, rgba(10, 45, 31, 0.10), rgba(6, 31, 21, 0.18)),
     url('../img/fundo.png');
-  background-size: cover, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-  background-attachment: fixed, fixed;
+  background-size: cover, cover, cover;
+  background-position: center, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed, fixed, fixed;
   color: var(--text);
   position: relative;
 }
