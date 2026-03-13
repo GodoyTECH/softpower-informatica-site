@@ -969,7 +969,11 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 body {
   background-color: var(--bg);
   background-image:
+
+    linear-gradient(160deg, rgba(246, 250, 247, 0.16), rgba(236, 243, 240, 0.10)),
+
     linear-gradient(160deg, rgba(246, 250, 247, 0.28), rgba(236, 243, 240, 0.20)),
+
     url('../img/fundo.png');
   background-size: cover, cover;
   background-position: center, center;
@@ -999,9 +1003,11 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 0;
+
   opacity: 0.10;
   background: url('../img/fundo.png') center / cover no-repeat;
   mix-blend-mode: multiply;
+
 }
 
 body > * {
@@ -1101,7 +1107,7 @@ body > * {
   justify-content: center;
   margin-bottom: 20px;
 }
-
+======
 .hero-buttons,
 .hero-stats {
   justify-content: center;
@@ -1250,7 +1256,7 @@ h1, h2, h3, h4,
 .map-container,
 .form-input,
 .form-select,
-.form-textarea {
+.form-textarea {======
   background: rgba(231, 234, 238, 0.82);
   border-color: rgba(154, 164, 176, 0.5);
 }
@@ -1278,5 +1284,85 @@ h1, h2, h3, h4,
   .nav-link:hover,
   .nav-link.active {
     color: var(--primary);
+  }
+}
+/* ===== AJUSTE FINAL: CONTAINERS ESCUROS TRANSLÚCIDOS + REMOVER PELÍCULA BRANCA ===== */
+.section,
+.page-header,
+.footer,
+section[style*="var(--bg-card)"] {
+  background: transparent !important;
+}
+
+.card,
+.shop-card,
+.cart-table,
+.promo-slider,
+.service-quote-cta,
+.faq-item,
+.contact-card,
+.map-container,
+.form-input,
+.form-select,
+.form-textarea {
+  background: rgba(25, 31, 38, 0.48) !important;
+  border: 1px solid rgba(124, 138, 153, 0.35) !important;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(5px);
+}
+
+.card p,
+.card a,
+.contact-card p,
+.contact-card a,
+.faq-answer p,
+.location-info p,
+.location-item,
+.form-label,
+.form-input,
+.form-select,
+.form-textarea,
+.footer,
+.footer p,
+.footer a,
+.footer-bottom,
+.text-muted {
+  color: rgba(232, 238, 245, 0.9) !important;
+}
+
+.section-title p,
+.hero-subtitle {
+  color: rgba(232, 238, 245, 0.86) !important;
+}
+
+.card h2,
+.card h3,
+.card h4,
+.service-quote-cta h3,
+.faq-question,
+.contact-card h3,
+.location-info h2,
+.location-item,
+.location-item a,
+.stat-item p,
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: rgba(243, 247, 251, 0.96) !important;
+}
+
+@media (max-width: 768px) {
+  .card,
+  .shop-card,
+  .cart-table,
+  .promo-slider,
+  .service-quote-cta,
+  .faq-item,
+  .contact-card,
+  .map-container,
+  .form-input,
+  .form-select,
+  .form-textarea {
+    background: rgba(25, 31, 38, 0.56) !important;
+    backdrop-filter: blur(4px);
   }
 }
