@@ -1303,7 +1303,9 @@ h1, h2, h3, h4,
 .map-container,
 .form-input,
 .form-select,
-.form-textarea {=
+
+.form-textarea {
+
   background: rgba(231, 234, 238, 0.82);
   border-color: rgba(154, 164, 176, 0.5);
 }
@@ -1425,10 +1427,14 @@ section[style*="var(--bg-card)"] {
   object-fit: contain;
 }
 
+.header-inner {
+  padding-inline: clamp(14px, 3vw, 24px);
+}
+
 @media (max-width: 768px) {
   body {
-    background-size: cover, cover, cover;
-    background-position: center top, center top, center top;
+    background-size: cover, cover, 100% auto;
+    background-position: center top, center top, center 0%;
     background-attachment: scroll, scroll, scroll;
   }
 
@@ -1438,8 +1444,6 @@ section[style*="var(--bg-card)"] {
 
   .header {
     padding-top: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
   }
 
   .header .logo,
@@ -1464,13 +1468,12 @@ section[style*="var(--bg-card)"] {
 
 @media (max-width: 480px) {
   body {
-    background-size: cover, cover, cover;
-    background-position: center top, center top, center 8%;
+    background-size: cover, cover, 120% auto;
+    background-position: center top, center top, center 4%;
   }
 
-  .header {
-    padding-left: 14px;
-    padding-right: 14px;
+  .header-inner {
+    padding-inline: 12px;
   }
 
   .header .logo,
