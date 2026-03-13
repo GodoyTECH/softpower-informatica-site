@@ -580,7 +580,50 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 }
 
 .testimonial-avatar {
-  width: 50px;
+  width: 50px;/* ===== HOTFIX MOBILE: fundo, logo navbar e menu sanduíche ===== */
+.header .logo,
+.header .logo img,
+.header .logo-image {
+  display: block;
+  width: auto;
+  height: clamp(52px, 5.2vw, 64px);
+  max-height: 64px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-size: cover, cover, contain;
+    background-position: center top, center top, center top;
+    background-attachment: scroll, scroll, scroll;
+  }
+
+  body::after {
+    display: none;
+  }
+
+  .header {
+    padding-top: 8px;
+  }
+
+  .header .logo,
+  .header .logo img,
+  .header .logo-image {
+    height: clamp(56px, 16vw, 64px);
+    max-height: 64px;
+  }
+
+  .menu-toggle {
+    padding: 12px;
+  }
+
+  .menu-toggle span {
+    height: 3px;
+    width: 26px;
+    border-radius: 3px;
+    background: var(--primary);
+    box-shadow: 0 1px 6px rgba(255, 107, 0, 0.35);
+  }
   height: 50px;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   border-radius: 50%;
@@ -1104,7 +1147,6 @@ body > * {
   justify-content: center;
   margin-bottom: 20px;
 }
-======
 .hero-buttons,
 .hero-stats {
   justify-content: center;
