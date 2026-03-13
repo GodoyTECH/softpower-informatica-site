@@ -1077,7 +1077,7 @@ body > * {
 
 .hero {
   background:
-    radial-gradient(circle at 50% 56%, rgba(245, 250, 246, 0.78) 0%, rgba(245, 250, 246, 0.48) 34%, rgba(245, 250, 246, 0.14) 58%, transparent 74%),
+    radial-gradient(circle at 50% 56%, rgba(223, 232, 226, 0.32) 0%, rgba(223, 232, 226, 0.18) 34%, rgba(223, 232, 226, 0.06) 58%, transparent 74%),
     radial-gradient(circle at 20% 15%, rgba(255, 107, 0, 0.10), transparent 34%);
 }
 
@@ -1133,10 +1133,18 @@ body > * {
 .promo-slide { min-width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
 .promo-media img { border-radius: 14px; width: 100%; max-height: 320px; object-fit: cover; }
 .promo-seal { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(255, 107, 0, 0.14); color: #b55208; font-weight: 600; }
+.promo-slide h3 { color: #dee6eb; }
+.promo-slide p,
+#promo-description { color: #bfcbd3; }
 .promo-nav { display: flex; justify-content: space-between; margin-top: 10px; }
 .promo-dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
 .promo-dot { width: 10px; height: 10px; border-radius: 50%; border: 0; background: #b4bcc5; }
 .promo-dot.active { background: var(--primary); }
+
+.ad-price,
+.ad-price span {
+  color: var(--primary);
+}
 
 @media (max-width: 768px) {
   body::before {
