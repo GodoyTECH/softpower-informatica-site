@@ -1469,7 +1469,8 @@ section[style*="var(--bg-card)"] {
 
 .hero-logo {
 
-  width: clamp(110px, 14.5vw, 166px);
+  width: clamp(125px, 16vw, 190px);
+}
 
 
 .hero h1,
