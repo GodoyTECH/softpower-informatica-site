@@ -580,50 +580,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
 }
 
 .testimonial-avatar {
-  width: 50px;/*  HOTFIX MOBILE: fundo, logo navbar e menu sanduíche  */
-.header .logo,
-.header .logo img,
-.header .logo-image {
-  display: block;
-  width: auto;
-  height: clamp(52px, 5.2vw, 64px);
-  max-height: 64px;
-  object-fit: contain;
-}
-
-@media (max-width: 768px) {
-  body {
-    background-size: cover, cover, contain;
-    background-position: center top, center top, center top;
-    background-attachment: scroll, scroll, scroll;
-  }
-
-  body::after {
-    display: none;
-  }
-
-  .header {
-    padding-top: 8px;
-  }
-
-  .header .logo,
-  .header .logo img,
-  .header .logo-image {
-    height: clamp(56px, 16vw, 64px);
-    max-height: 64px;
-  }
-
-  .menu-toggle {
-    padding: 12px;
-  }
-
-  .menu-toggle span {
-    height: 3px;
-    width: 26px;
-    border-radius: 3px;
-    background: var(--primary);
-    box-shadow: 0 1px 6px rgba(255, 107, 0, 0.35);
-  }
+  width: 50px;
   height: 50px;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   border-radius: 50%;
@@ -679,7 +636,7 @@ h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
   background: rgba(255, 107, 0, 0.1);
   border-radius: var(--radius-sm);
   display: flex;
-  align-items: center;======
+  align-items: center;
   justify-content: center;
   color: var(--primary);
   font-size: 1.2rem;
@@ -1180,7 +1137,7 @@ body > * {
 #promo-description { color: #bfcbd3; }
 .promo-nav { display: flex; justify-content: space-between; margin-top: 10px; }
 .promo-dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
-.promo-dot { width: 10px; h======eight: 10px; border-radius: 50%; border: 0; background: #b4bcc5; }
+.promo-dot { width: 10px; height: 10px; border-radius: 50%; border: 0; background: #b4bcc5; }
 .promo-dot.active { background: var(--primary); }
 
 .ad-price,
@@ -1481,5 +1438,95 @@ section[style*="var(--bg-card)"] {
   .header .logo-image {
     height: clamp(52px, 18vw, 60px);
     max-height: 60px;
+  }
+}
+
+/*  HOTFIX RESPONSIVO FINAL - HOME DARK/MATRIX  */
+.header .logo,
+.header .logo img,
+.header .logo-image {
+  display: block;
+  width: auto;
+  height: clamp(44px, 4.4vw, 56px);
+  max-height: 56px;
+  object-fit: contain;
+}
+
+.hero {
+  background:
+    linear-gradient(180deg, rgba(4, 22, 15, 0.62), rgba(4, 22, 15, 0.72)),
+    radial-gradient(circle at 50% 90%, rgba(24, 163, 91, 0.22), transparent 58%),
+    url('../img/fundo.png') center/cover no-repeat;
+}
+
+.hero::before {
+  background:
+    linear-gradient(rgba(22, 68, 51, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(22, 68, 51, 0.22) 1px, transparent 1px);
+  background-size: 42px 42px;
+  opacity: 0.55;
+}
+
+.hero-logo {
+  width: clamp(92px, 12vw, 140px);
+}
+
+.hero h1,
+.hero-subtitle,
+.stat-item p {
+  color: #eef7f2 !important;
+}
+
+.promo-slide h3,
+#promo-description {
+  color: rgba(236, 243, 248, 0.96) !important;
+}
+
+.menu-toggle span {
+  background: var(--primary) !important;
+  height: 3px;
+  border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .header {
+    padding-top: 6px;
+  }
+
+  .header .logo,
+  .header .logo img,
+  .header .logo-image {
+    height: clamp(38px, 12vw, 48px);
+    max-height: 48px;
+  }
+
+  .menu-toggle {
+    margin-right: 2px;
+  }
+
+  .nav {
+    top: calc(var(--header-height) - 2px);
+    left: 12px;
+    right: 12px;
+    background: rgba(8, 20, 16, 0.95);
+    border: 1px solid rgba(255, 107, 0, 0.35);
+  }
+
+  .nav-link {
+    color: #f4faf6;
+  }
+
+  body {
+    background-size: cover, cover, cover;
+    background-position: center top, center top, center top;
+    background-attachment: scroll, scroll, scroll;
+  }
+
+  .hero {
+    min-height: 92vh;
   }
 }
