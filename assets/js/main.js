@@ -64,7 +64,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav');
-  menuToggle?.addEventListener('click', () => nav?.classList.toggle('active'));
+  const closeMobileMenu = () => {
+    if (!nav) return;
+    nav.classList.remove('active');
+    menuToggle?.setAttribute('aria-expanded', 'false');
+  };
+
+  const toggleMobileMenu = (event) => {
+    if (!nav) return;
+    event.stopPropagation();
+    const willOpen = !nav.classList.contains('active');
+    nav.classList.toggle('active', willOpen);
+    menuToggle?.setAttribute('aria-expanded', String(willOpen));
+  };
+
+  menuToggle?.setAttribute('aria-expanded', 'false');
+  menuToggle?.addEventListener('click', toggleMobileMenu);
+
+  nav?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) closeMobileMenu();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (window.innerWidth > 768 || !nav?.classList.contains('active')) return;
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.closest('.nav, .menu-toggle')) return;
+    closeMobileMenu();
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.innerWidth <= 768 && nav?.classList.contains('active')) {
+      closeMobileMenu();
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) closeMobileMenu();
+  });
 
   const promoWrap = document.getElementById('promo-slider');
   if (promoWrap) {
