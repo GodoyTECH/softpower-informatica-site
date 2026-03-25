@@ -152,3 +152,21 @@ Admin auth (se habilitado):
 
 ## Observação
 Mudanças aplicadas com abordagem mínima e reversível, preservando estrutura do e-commerce para futura reativação.
+
+## Login de teste (dashboard)
+
+Para acessar dashboard sem depender de cadastro, o endpoint `/api/auth/login` aceita usuário de demonstração.
+
+Credenciais padrão (fallback):
+- E-mail: `admin@luxe.com`
+- Senha: `123456`
+
+Recomendado configurar no Netlify para produção:
+- `DEMO_USER_EMAIL`
+- `DEMO_USER_PASSWORD`
+- `DEMO_USER_NAME`
+- `AUTH_JWT_SECRET`
+
+Observações:
+- `POST /api/auth/register` retorna mensagem de cadastro temporariamente desabilitado (evita erro 404 no front).
+- `GET /api/me` valida `Authorization: Bearer <token>` e devolve usuário autenticado.
